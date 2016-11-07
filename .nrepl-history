@@ -159,3 +159,9 @@ notes*
     (swap! notelog assoc :last-e event :last-ts ts)))
 (midi-handle-events launchpad (print-handler notes))
 @notes
+(require 'main(
+(require 'main)
+@notes
+main/@notes
+main/notes
+(require 'main)
