@@ -1,0 +1,161 @@
+(use 'midi)
+(def launchpad (midi-in))
+(defn midi-inst-player [inst]
+  (let [notes* (atom {})]
+    (fn [event ts]
+      (clojure.pprint/pprint event)
+      (clojure.pprint/pprint ts)
+      )))
+(midi-handle-events launchpad adam-handler)
+(use 'midi)
+(def launchpad (midi-in))
+(defn midi-inst-player [inst]
+  (let [notes* (atom {})]
+    (fn [event ts]
+      (clojure.pprint/pprint event)
+      (clojure.pprint/pprint ts)
+      )))
+(midi-handle-events launchpad adam-handler)
+(defn adam-handler
+  (let [notes* (atom {})]
+    (fn [event ts]
+      (clojure.pprint/pprint event)
+      (clojure.pprint/pprint ts)
+      )))
+(defn adam-handler []
+  (let [notes* (atom {})]
+    (fn [event ts]
+      (clojure.pprint/pprint event)
+      (clojure.pprint/pprint ts)
+      )))
+(midi-handle-events launchpad adam-handler)
+(defn print-handler []
+  (let [notes* (atom {})]
+    (fn [event ts]
+      (with-open [w (clojure.java.io/writer "test.txt")]
+    
+      (.write w (with-out-str 
+        (clojure.pprint/pprint event)))
+      
+      ))))
+(midi-handle-events launchpad print-handler)
+(use 'midi)
+(def launchpad (midi-in))
+(def notes* (atom {}))
+(defn print-handler [notelog]
+  (fn [event ts]
+   (cond
+      (= (:cmd event) :note-on)
+        (swap! notelog assoc (:note event) (inst :note (:note event) :velocity (:vel event)))
+ 
+      (or (= (:cmd event) :note-off)
+          (and (not (zero? (:note event)))
+               (zero? (:vel event))))
+        (if-let [note-id (get @notes* (:note event))]
+         (ctl note-id :gate 0)))))
+(defn print-handler [notelog]
+  (fn [event ts]
+   (cond
+      (= (:cmd event) :note-on)
+        (swap! notelog assoc (:note event) "yay!")
+ 
+      (or (= (:cmd event) :note-off)
+          (and (not (zero? (:note event)))
+               (zero? (:vel event))))
+        (if-let [note-id (get @notes* (:note event))]
+         (ctl note-id :gate 0)))))
+(defn print-handler [notelog]
+  (fn [event ts]
+   (cond
+      (= (:cmd event) :note-on)
+        (swap! notelog assoc (:note event) "yay!")
+ 
+      (or (= (:cmd event) :note-off)
+          (and (not (zero? (:note event)))
+               (zero? (:vel event))))
+        (if-let [note-id (get @notelog* (:note event))]
+         (swap! notelog dissoc (:note event)) ))))
+(defn print-handler [notelog]
+  (fn [event ts]
+   (cond
+      (= (:cmd event) :note-on)
+        (swap! notelog assoc (:note event) "yay!")
+ 
+      (or (= (:cmd event) :note-off)
+          (and (not (zero? (:note event)))
+               (zero? (:vel event))))
+        (if-let [note-id (get @notelog (:note event))]
+         (swap! notelog dissoc (:note event)) ))))
+(midi-handle-events launchpad (print-handler notes*))
+notes
+notes*
+(use 'midi)
+(def notes* (atom {}))
+(defn print-handler [notelog]
+  (fn [event ts]
+   (cond
+      (= (:cmd event) :note-on)
+        (swap! notelog assoc (:note event) "yay!")
+ 
+    )))
+(midi-handle-events launchpad (print-handler notes*))
+(def launchpad (midi-in))
+(midi-handle-events launchpad (print-handler notes*))
+note*
+notes*
+(defn print-handler [notelog]
+  (fn [event ts]
+    (swap! notelog assoc :last-e event :last-ts ts)
+ 
+    )))
+(defn print-handler [notelog]
+  (fn [event ts]
+    (swap! notelog assoc :last-e event :last-ts ts)
+ 
+    ))
+(midi-handle-events launchpad (print-handler notes*))
+notes*
+(get @notelog :last-e)
+(get @notes :last-e)
+(get @notes* :last-e)
+(get @notes* :last-ts)
+(use 'midi)
+(def launchpad (midi-in))
+(def notes (atom {}))
+(defn print-handler [notelog]
+  (fn [event ts]
+    (swap! notelog assoc :last-e event :last-ts ts)
+ 
+    ))
+      ; (or (= (:cmd event) :note-off)
+      ;     (and (not (zero? (:note event)))
+      ;          (zero? (:vel event))))
+      ;   (if-let [note-id (get @notelog (:note event))]
+      ;    (swap! notelog dissoc (:note event))) 
+        ; )))
+(midi-handle-events launchpad (print-handler notes))
+@notes
+(use 'midi)
+(def launchpad (midi-in))
+(def notes (atom {}))
+(defn print-handler [notelog]
+  (fn [event ts]
+    (swap! notelog assoc :last-e event :last-ts ts)
+ 
+    ))
+      ; (or (= (:cmd event) :note-off)
+      ;     (and (not (zero? (:note event)))
+      ;          (zero? (:vel event))))
+      ;   (if-let [note-id (get @notelog (:note event))]
+      ;    (swap! notelog dissoc (:note event))) 
+        ; )))
+(midi-handle-events launchpad (print-handler notes))
+@notes
+(use 'midi)
+(def launchpad (midi-in))
+(def notes (atom {}))
+(defn print-handler [notelog]
+  (fn [event ts]
+    (swap! notelog assoc :last-e event :last-ts ts)))
+(midi-handle-events launchpad (print-handler notes))
+@notes
