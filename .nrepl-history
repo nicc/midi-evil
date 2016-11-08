@@ -165,3 +165,36 @@ notes*
 main/@notes
 main/notes
 (require 'main)
+@device-events
+@main/device_events
+main/@device_events
+main/device_events
+(require 'main)
+main/device-events
+(require 'main)
+main/device-events
+(require 'main)
+(map #(%) [{:a 1 :b 2} {:a 3 :b 4}])
+(map #(:A %) [{:a 1 :b 2} {:a 3 :b 4}])
+(map #(:a %) [{:a 1 :b 2} {:a 3 :b 4}])
+(map #([(:a %) %]) [{:a 1 :b 2} {:a 3 :b 4}])
+(map #('[(:a %) %]) [{:a 1 :b 2} {:a 3 :b 4}])
+(into {} [:a 1 :b 2])
+(hash-map :a 1 :b 2)
+(reduce #(conj (:a %) %) [{:a 1 :b 2} {:a 3 :b 4}])
+(reduce #(conj (:a %) %) [] [{:a 1 :b 2} {:a 3 :b 4}])
+(reduce #(-> %1 (conj (:a %2)) (conj %2)) [] [{:a 1 :b 2} {:a 3 :b 4}])
+(hash-map (reduce #(-> %1 (conj (:a %2)) (conj %2)) [] [{:a 1 :b 2} {:a 3 :b 4}]))
+(apply hash-map (reduce #(-> %1 (conj (:a %2)) (conj %2)) [] [{:a 1 :b 2} {:a 3 :b 4}]))
+(def events [{:a 1 :b 2} {:a 3 :b 4}])
+(->> events
+    (reduce #(-> %1 (conj (:a %2)) (conj %2)) [])
+    (apply hash-map)))
+(->> events
+    (reduce #(-> %1 (conj (:a %2)) (conj %2)) [])
+    (apply hash-map))
+(def r (->> events
+    (reduce #(-> %1 (conj (:a %2)) (conj %2)) [])
+    (apply hash-map)))
+(r 1)
+(require 'main)
