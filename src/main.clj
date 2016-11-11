@@ -26,7 +26,7 @@
     (apply hash-map)))
 
 (defn draw-note-circle [note _]
-  (let [diam (q/random note)       
+  (let [diam note       
         x    (q/random (q/width))
         y    (q/random (q/height))]
     (q/ellipse x y diam diam)))
