@@ -1,7 +1,8 @@
 (ns main
   (:require [quil.core :as q]
             [quil.middleware :as m]
-            [midi]))
+            [midi]
+            [clojure.pprint :as pp]))
 
 (def launchpad (midi/midi-in))
 (def device-events (atom {:launchpad []}))
@@ -18,6 +19,8 @@
     (swap!
       device-events
       assoc device-name [])
+    (if (> (count events) 0)
+      (spit "./event.log" (with-out-str (pp/pprint events)) :append true))
     events))
 
 (defn generate-note-map [events]
