@@ -1,10 +1,11 @@
 (set-env!
-  :resource-paths #{"src"}
+  :resource-paths #{"src" "test"}
   :target "target"
   :dependencies '[[org.clojure/clojure "1.8.0"]
                   [quil "2.5.0"]
                   [thi.ng/color "1.2.0"]
-                  [overtone/midi-clj "0.1"]])
+                  [overtone/midi-clj "0.1"]
+                  [adzerk/boot-test "1.1.1" :scope "test"]])
 
 (task-options!
  pom {:project 'midi-evil
@@ -14,6 +15,7 @@
 
 (deftask build []
   (comp
+    (test)
     (aot)
     (pom)
     (uber)
