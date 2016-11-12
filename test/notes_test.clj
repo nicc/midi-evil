@@ -27,5 +27,6 @@
 (deftest repeated-notemap
   (let [notemap (notes/->map middle-c-repeated)
         expected { 60 { :amp 90
-                        :decay 80 }}]
+                        :decay 40 }}]
     (is (= expected notemap))))
+; stack :amp, but use last :decay
