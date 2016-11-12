@@ -198,3 +198,9 @@ main/device-events
     (apply hash-map)))
 (r 1)
 (require 'main)
+(def device-names [:piano])
+(reduce 
+    #(assoc %1 %2 {})
+    {}
+    (device-names))
+(require 'main)
