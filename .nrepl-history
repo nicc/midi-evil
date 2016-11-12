@@ -204,3 +204,13 @@ main/device-events
     {}
     (device-names))
 (require 'main)
+(use 'midi-clj)
+(use '[midi-clj])
+(use '[midi])
+midi-shortmessage-command
+(midi-shortmessage-command)
+(midi-shortmessage-command :144)
+(midi-shortmessage-command :44)
+(midi-shortmessage-command 144)
+(assoc {:a 1} :a ({} :a))
+(into {} (remove (comp nil? second) {:a 1 :b nil}))

@@ -13,6 +13,8 @@
  jar {:main 'main}
  aot {:all true})
 
+(require '[adzerk.boot-test :refer :all])
+
 (deftask build []
   (comp
     (test)
