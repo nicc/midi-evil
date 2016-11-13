@@ -214,3 +214,47 @@ midi-shortmessage-command
 (midi-shortmessage-command 144)
 (assoc {:a 1} :a ({} :a))
 (into {} (remove (comp nil? second) {:a 1 :b nil}))
+(mod 60 12)
+(mod 61 12)
+(mod 62 12)
+(mod 71 12)
+([:a :b :c] 0)
+([:a :b :c] 1)
+([:a :b :c] 2)
+:C#
+(/ 60 12)
+(/ 61 12)
+(quot 61 12)
+(quot 62 12)
+(quot 71 12)
+(quot 72 12)
+(defn- midi->note [midi-note]
+  (let [note-num (mod midi-note (count notes))]
+    (notes note-num)))
+(defn- midi->octave [midi-note]
+(def notes [:C :C# :D :D# :E :F :F# :G :G# :A :A# :B ])
+(defn- midi->note [midi-note]
+  (let [note-num (mod midi-note (count notes))]
+    (notes note-num)))
+(defn- midi->octave [midi-note]
+    (quot note-num (count notes)))
+(defn- midi->octave [midi-note]
+    (quot midi-note (count notes)))
+(midi->note 60)
+(midi->note 61)
+(midi->note 62)
+(midi->octave 62)
+(require '[thi.ng.color.core :as col])
+(col/as-hsv (col/rgba 255 0 0))
+(col/as-hsva (col/rgba 255 0 0))
+(col/as-hsva (col/rgba 255 125 0))
+(col/as-hsva (col/rgba 255 255 0))
+(col/as-hsva (col/rgba 125 255 0))
+(col/as-hsva (col/rgba 0 255 0))
+(col/as-hsva (col/rgba 0 255 125))
+(col/as-hsva (col/rgba 0 255 255))
+(col/as-hsva (col/rgba 0 125 255))
+(col/as-hsva (col/rgba 0 0 255))
+(col/as-hsva (col/rgba 125 0 255))
+(col/as-hsva (col/rgba 255 0 255))
+(col/as-hsva (col/rgba 255 0 125))

@@ -1,6 +1,15 @@
 (ns notes
   (:require [midi]))
 
+(def notes [:C :C# :D :D# :E :F :F# :G :G# :A :A# :B ])
+
+(defn midi->note [midi-note]
+  (let [note-num (mod midi-note (count notes))]
+    (notes note-num)))
+
+(defn midi->octave [midi-note]
+    (quot midi-note (count notes)))
+
 (defn note-viz [event]
   (cond
     (= (event :cmd) 144) { :amp (event :vel) } ; note start
