@@ -64,3 +64,8 @@
 
 (defn note->hsv [note]
   (hsv (notes/->name note) (notes/->octave note)))
+
+(defn note->rgba-vector [note]
+  (let [hsv-col (note->hsv note)
+        rgb      (col/as-rgba hsv-col)]
+    [(col/red rgb) (col/green rgb) (col/blue rgb)]))

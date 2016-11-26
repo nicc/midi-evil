@@ -4,7 +4,8 @@
             [midi]
             [devices]
             [draw]
-            [notes]))
+            [notes]
+            [clojure.pprint :as pp]))
 
 (defn initial-state [device-names]
   (reduce 
@@ -17,10 +18,11 @@
 
 ; TODO: make this generic for devices
 (defn generate-state [state events]
-  (let [new-state (-> events :piano notes/->map)]
+  (let [new-state (notes/->map events)]
     (update-in state [:piano] merge-device-state new-state)))
 
 (defn draw-state [state]
+  ; (spit "./event.log" (with-out-str (pp/pprint state)) :append true)
   (doseq [[n e] (seq (state :piano))]
     (draw/circle n e)))
 
