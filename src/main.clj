@@ -6,29 +6,38 @@
             [draw]
             [notes]))
 
-(defn initial-state []
+(defn initial-state [device-names]
   (reduce 
     #(assoc %1 %2 {})
     {}
-    (devices/names)))
+    device-names))
+
+(defn merge-device-state [old-state new-state]
+  (merge-with notes/merge-notemaps old-state new-state))
+
+; TODO: make this generic for devices
+(defn generate-state [state events]
+  (let [new-state (-> events :piano notes/->map)]
+    (update-in state [:piano] merge-device-state new-state)))
+
+(defn draw-state [state]
+  (doseq [[n e] (seq (state :piano))]
+    (draw/circle n e)))
+
+; v --- quil functions --- v
 
 (defn setup []
   (q/frame-rate 60)
   (q/background 200)
   (devices/register! :piano)
-  (initial-state)) ; return initial state
+  (initial-state (devices/names))) ; return initial state
 
 (defn update-state [state]
-  (->>
-    (devices/pull-events! :piano)
-    (notes/->map)
-    (hash-map :piano)
-    (merge state)))
+  (let [events (devices/pull-events! :piano)]
+    (generate-state state events)))
 
 (defn draw [state]
-  ; (throw (Exception. (with-out-str (pp/pprint state))))
-  (doseq [[n e] (seq (state :piano))]
-    (draw/circle n e)))
+  (draw-state state))
 
 (q/defsketch example 
   :middleware [m/fun-mode]
@@ -38,6 +47,7 @@
   :update update-state
   :draw draw
   :size [646 400])
+
 
 
 ; (defn adam-handler [inst]

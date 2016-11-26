@@ -12,8 +12,8 @@
 ; hue is mapped directly to notes
 (deftest hue-test
   (is (= 0.0 (thing-col/hue (colours/note->hsv middle-c))))
-  (is (= 0.4150326797385621 (thing-col/hue (colours/note->hsv middle-f))))
-  (is (= 0.9183006535947712 (thing-col/hue (colours/note->hsv middle-b)))))
+  (is (= 0.9183006535947712 (thing-col/hue (colours/note->hsv middle-f))))
+  (is (= 0.4150326797385621 (thing-col/hue (colours/note->hsv middle-b)))))
 
 ; saturation remains at maximum throughout lower octaves
 ; and drops in higher octaves to make a whiter/brighter colour
