@@ -1,30 +1,41 @@
 (ns notes
   (:require [midi]))
 
-(def notes [:C :C# :D :D# :E :F :F# :G :G# :A :A# :B ])
+(def note-names [:C :C# :D :D# :E :F :F# :G :G# :A :A# :B ])
 
-(defn midi->note [midi-note]
-  (let [note-num (mod midi-note (count notes))]
-    (notes note-num)))
+(defn ->name [note]
+  (let [midi-note (note :note)
+        note-num (mod midi-note (count note-names))]
+    (note-names note-num)))
 
-(defn midi->octave [midi-note]
-    (quot midi-note (count notes)))
+(defn ->octave [note]
+  (let [midi-note (note :note)]
+    (quot midi-note (count note-names))))
 
-(defn note-viz [event]
+(defn velocity [event]
   (cond
     (= (event :cmd) 144) { :amp (event :vel) } ; note start
     (= (event :cmd) 128) { :decay (event :vel) } ; note end
     :else {}))
 
+(defn event->notemap [event]
+  (let [note (event :note)]
+    (conj {:note note} (velocity event))))
+
 ; stack :amp, but use last :decay
 ; TODO: this is hideous. Make it nicer
-(defn note-viz-merge [first-viz second-viz]
-  (let [amp1 (or (first-viz :amp) 0)
-        amp2 (or (second-viz :amp) 0)
+(defn merge-notemaps [first-note second-note]
+  (if-not
+    (= (first-note :note) (second-note :note))
+    (throw (Exception. "Don't know how to merge mismatched notes")))
+
+  (let [note (first-note :note)
+        amp1 (or (first-note :amp) 0)
+        amp2 (or (second-note :amp) 0)
         amp (+ amp1 amp2)
-        decay (or (second-viz :decay) nil)]
-    (into {} (filter second {:amp amp :decay decay}))))
+        decay (or (second-note :decay) nil)]
+    (into {} (filter second {:amp amp :decay decay :note note}))))
 
 (defn ->map [events]
-  (let [merge-f #(merge-with note-viz-merge %1 {(:note %2) (note-viz %2)})]
+  (let [merge-f #(merge-with merge-notemaps %1 {(%2 :note) (event->notemap %2)})]
     (reduce merge-f {} events)))

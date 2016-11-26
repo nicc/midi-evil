@@ -258,3 +258,5 @@ midi-shortmessage-command
 (col/as-hsva (col/rgba 125 0 255))
 (col/as-hsva (col/rgba 255 0 255))
 (col/as-hsva (col/rgba 255 0 125))
+(conj {:a 1} {:b 2})
+(merge {:a 1} {:b 2})
