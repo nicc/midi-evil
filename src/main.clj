@@ -4,8 +4,7 @@
             [midi]
             [devices]
             [draw]
-            [notes]
-            [clojure.pprint :as pp]))
+            [notes]))
 
 (defn initial-state [device-names]
   (reduce 
@@ -22,7 +21,6 @@
     (update-in state [:piano] merge-device-state new-state)))
 
 (defn draw-state [state]
-  ; (spit "./event.log" (with-out-str (pp/pprint state)) :append true)
   (doseq [[n e] (seq (state :piano))]
     (draw/circle n e)))
 

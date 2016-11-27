@@ -1,6 +1,6 @@
 (ns devices
   (:require [midi]
-            [clojure.pprint :as pp]))
+            [log]))
 
 (def registry (atom {}))
 (def midi-events (atom {}))
@@ -25,7 +25,7 @@
   (let [events (@midi-events device-name)]
     (swap! midi-events assoc device-name [])
     (if (> (count events) 0)
-      (spit "./event.log" (with-out-str (pp/pprint events)) :append true))
+      (log/to-file "./event.log" events))
     events))
 
 (defn names []
