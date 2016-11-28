@@ -32,37 +32,33 @@
       (update-in state [:piano] merge-device-state)
       (set-positions))))
 
-    ; (update-in state [:piano] merge-device-state new-state)))
-
-
 (defn draw-state [state]
   (doseq [[n e] (seq (state :piano))]
     (draw/circle n e)))
 
+
 ; v --- quil functions --- v
+    (defn setup []
+      (q/frame-rate 60)
+      (q/background 200)
+      (devices/register! :piano)
+      (initial-state (devices/names))) ; return initial state
 
-(defn setup []
-  (q/frame-rate 60)
-  (q/background 200)
-  (devices/register! :piano)
-  (initial-state (devices/names))) ; return initial state
+    (defn update-state [state]
+      (let [events (devices/pull-events! :piano)]
+        (generate-state state events)))
 
-(defn update-state [state]
-  (let [events (devices/pull-events! :piano)]
-    (generate-state state events)))
+    (defn draw [state]
+      (draw-state state))
 
-(defn draw [state]
-  (draw-state state))
-
-(q/defsketch example 
-  :middleware [m/fun-mode]
-  :title "midi-evil"
-  :settings #(q/smooth 2) ; anti-aliasing
-  :setup setup
-  :update update-state
-  :draw draw
-  :size [(size :x) (size :y)])
-
+    (q/defsketch example 
+      :middleware [m/fun-mode]
+      :title "midi-evil"
+      :settings #(q/smooth 2) ; anti-aliasing
+      :setup setup
+      :update update-state
+      :draw draw
+      :size [(size :x) (size :y)])
 
 
 ; (defn adam-handler [inst]
