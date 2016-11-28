@@ -27,9 +27,12 @@
 ; TODO: make this generic for devices
 (defn generate-state [state events]
   (let [new-state (notes/->map events)]
-    (update-in state [:piano] merge-device-state new-state)
-    ; TODO: set positions
-    ))
+    (->> events
+      (notes/->map)
+      (update-in state [:piano] merge-device-state)
+      (set-positions))))
+
+    ; (update-in state [:piano] merge-device-state new-state)))
 
 
 (defn draw-state [state]

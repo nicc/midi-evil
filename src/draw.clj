@@ -9,8 +9,8 @@
     (apply q/fill rgba))
   
   (let [diam 40
-        x    (q/random (q/width))
-        y    (q/random (q/height))]
+        x    (first (note :position))
+        y    (second (note :position))]
     (q/ellipse x y diam diam)))
 
 (defn position [_ x y]

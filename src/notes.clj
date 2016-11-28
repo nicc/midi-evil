@@ -30,11 +30,12 @@
     (throw (Exception. "Don't know how to merge mismatched notes")))
 
   (let [note (first-note :note)
+        position (first-note :position)
         amp1 (or (first-note :amp) 0)
         amp2 (or (second-note :amp) 0)
         amp (+ amp1 amp2)
         decay (or (second-note :decay) nil)]
-    (into {} (filter second {:amp amp :decay decay :note note}))))
+    (into {} (filter second {:amp amp :decay decay :note note :position position}))))
 
 (defn ->map [events]
   (let [merge-f #(merge-with merge-notemaps %1 {(%2 :note) (event->notemap %2)})]
