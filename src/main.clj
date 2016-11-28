@@ -4,7 +4,10 @@
             [midi]
             [devices]
             [draw]
-            [notes]))
+            [notes]
+            [clojure.algo.generic.functor :as funct]))
+
+(def size {:x 646 :y 400})
 
 (defn initial-state [device-names]
   (reduce 
@@ -15,10 +18,19 @@
 (defn merge-device-state [old-state new-state]
   (merge-with notes/merge-notemaps old-state new-state))
 
+(defn set-positions [state]
+  (let [get-position #(draw/position % (size :x) (size :y))
+        or-position  #(or (% :position) (get-position %))
+        set-position #(into % {:position (or-position %)})]
+    (update-in state [:piano] (partial funct/fmap set-position))))
+
 ; TODO: make this generic for devices
 (defn generate-state [state events]
   (let [new-state (notes/->map events)]
-    (update-in state [:piano] merge-device-state new-state)))
+    (update-in state [:piano] merge-device-state new-state)
+    ; TODO: set positions
+    ))
+
 
 (defn draw-state [state]
   (doseq [[n e] (seq (state :piano))]
@@ -46,7 +58,7 @@
   :setup setup
   :update update-state
   :draw draw
-  :size [646 400])
+  :size [(size :x) (size :y)])
 
 
 

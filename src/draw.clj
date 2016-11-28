@@ -12,3 +12,8 @@
         x    (q/random (q/width))
         y    (q/random (q/height))]
     (q/ellipse x y diam diam)))
+
+(defn position [_ x y]
+  (let [x (rand-int x) ; currently random
+        y (rand-int y)] ; currently random
+    [x y]))

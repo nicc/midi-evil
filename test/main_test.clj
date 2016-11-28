@@ -19,3 +19,8 @@
                                     :note 60 }}
         expected-state        {:piano expected-piano-state}]
     (is (= expected-state (main/generate-state state events)))))
+
+(deftest set-positions
+  (let [with-positions (main/set-positions state)
+        position       (get-in with-positions [:piano 42 :position])]
+    (is (= 2 (count position))))) ; vector with x and y

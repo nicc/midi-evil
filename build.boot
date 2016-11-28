@@ -5,7 +5,8 @@
                   [quil "2.5.0"]
                   [thi.ng/color "1.2.0"]
                   [overtone/midi-clj "0.1"]
-                  [adzerk/boot-test "1.1.1" :scope "test"]])
+                  [adzerk/boot-test "1.1.1" :scope "test"]
+                  [org.clojure/algo.generic "0.1.2"]])
 
 (task-options!
  pom {:project 'midi-evil
