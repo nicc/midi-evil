@@ -1,0 +1,81 @@
+; left pedal. continuous control.
+
+[{:chan 0, :cmd 176, :note 67, :vel 4, :data1 67, :data2 4}
+ {:chan 0, :cmd 176, :note 67, :vel 9, :data1 67, :data2 9}
+ {:chan 0, :cmd 176, :note 67, :vel 17, :data1 67, :data2 17}
+ {:chan 0, :cmd 176, :note 67, :vel 25, :data1 67, :data2 25}
+ {:chan 0, :cmd 176, :note 67, :vel 33, :data1 67, :data2 33}]
+[{:chan 0, :cmd 176, :note 67, :vel 40, :data1 67, :data2 40}
+ {:chan 0, :cmd 176, :note 67, :vel 47, :data1 67, :data2 47}
+ {:chan 0, :cmd 176, :note 67, :vel 55, :data1 67, :data2 55}
+ {:chan 0, :cmd 176, :note 67, :vel 63, :data1 67, :data2 63}
+ {:chan 0, :cmd 176, :note 67, :vel 70, :data1 67, :data2 70}
+ {:chan 0, :cmd 176, :note 67, :vel 78, :data1 67, :data2 78}
+ {:chan 0, :cmd 176, :note 67, :vel 86, :data1 67, :data2 86}
+ {:chan 0, :cmd 176, :note 67, :vel 95, :data1 67, :data2 95}
+ {:chan 0, :cmd 176, :note 67, :vel 104, :data1 67, :data2 104}
+ {:chan 0, :cmd 176, :note 67, :vel 113, :data1 67, :data2 113}
+ {:chan 0, :cmd 176, :note 67, :vel 120, :data1 67, :data2 120}
+ {:chan 0, :cmd 176, :note 67, :vel 127, :data1 67, :data2 127}]
+[{:chan 0, :cmd 176, :note 67, :vel 125, :data1 67, :data2 125}
+ {:chan 0, :cmd 176, :note 67, :vel 118, :data1 67, :data2 118}
+ {:chan 0, :cmd 176, :note 67, :vel 109, :data1 67, :data2 109}
+ {:chan 0, :cmd 176, :note 67, :vel 99, :data1 67, :data2 99}]
+[{:chan 0, :cmd 176, :note 67, :vel 88, :data1 67, :data2 88}
+ {:chan 0, :cmd 176, :note 67, :vel 78, :data1 67, :data2 78}
+ {:chan 0, :cmd 176, :note 67, :vel 68, :data1 67, :data2 68}
+ {:chan 0, :cmd 176, :note 67, :vel 57, :data1 67, :data2 57}
+ {:chan 0, :cmd 176, :note 67, :vel 46, :data1 67, :data2 46}
+ {:chan 0, :cmd 176, :note 67, :vel 35, :data1 67, :data2 35}
+ {:chan 0, :cmd 176, :note 67, :vel 22, :data1 67, :data2 22}
+ {:chan 0, :cmd 176, :note 67, :vel 12, :data1 67, :data2 12}]
+[{:chan 0, :cmd 176, :note 67, :vel 0, :data1 67, :data2 0}]
+
+
+
+
+
+
+; middle pedal. on/off
+
+[{:chan 0, :cmd 176, :note 66, :vel 127, :data1 66, :data2 127}]
+[{:chan 0, :cmd 176, :note 66, :vel 0, :data1 66, :data2 0}]
+[{:chan 0, :cmd 176, :note 66, :vel 127, :data1 66, :data2 127}]
+[{:chan 0, :cmd 176, :note 66, :vel 0, :data1 66, :data2 0}]
+
+
+
+
+
+; -- SUSTAIN
+; right pedal. continous
+
+[{:chan 0, :cmd 176, :note 64, :vel 1, :data1 64, :data2 1}]
+[{:chan 0, :cmd 176, :note 64, :vel 2, :data1 64, :data2 2}
+ {:chan 0, :cmd 176, :note 64, :vel 3, :data1 64, :data2 3}
+ {:chan 0, :cmd 176, :note 64, :vel 6, :data1 64, :data2 6}
+ {:chan 0, :cmd 176, :note 64, :vel 8, :data1 64, :data2 8}
+ {:chan 0, :cmd 176, :note 64, :vel 10, :data1 64, :data2 10}]
+[{:chan 0, :cmd 176, :note 64, :vel 13, :data1 64, :data2 13}
+ {:chan 0, :cmd 176, :note 64, :vel 17, :data1 64, :data2 17}
+ {:chan 0, :cmd 176, :note 64, :vel 25, :data1 64, :data2 25}
+ {:chan 0, :cmd 176, :note 64, :vel 26, :data1 64, :data2 26}
+ {:chan 0, :cmd 176, :note 64, :vel 30, :data1 64, :data2 30}
+ {:chan 0, :cmd 176, :note 64, :vel 35, :data1 64, :data2 35}
+ {:chan 0, :cmd 176, :note 64, :vel 42, :data1 64, :data2 42}]
+[{:chan 0, :cmd 176, :note 64, :vel 48, :data1 64, :data2 48}
+ {:chan 0, :cmd 176, :note 64, :vel 55, :data1 64, :data2 55}
+ {:chan 0, :cmd 176, :note 64, :vel 62, :data1 64, :data2 62}
+ {:chan 0, :cmd 176, :note 64, :vel 70, :data1 64, :data2 70}
+ {:chan 0, :cmd 176, :note 64, :vel 79, :data1 64, :data2 79}
+ {:chan 0, :cmd 176, :note 64, :vel 90, :data1 64, :data2 90}
+ {:chan 0, :cmd 176, :note 64, :vel 100, :data1 64, :data2 100}
+ {:chan 0, :cmd 176, :note 64, :vel 110, :data1 64, :data2 110}
+ {:chan 0, :cmd 176, :note 64, :vel 127, :data1 64, :data2 127}]
+[{:chan 0, :cmd 176, :note 64, :vel 116, :data1 64, :data2 116}
+ {:chan 0, :cmd 176, :note 64, :vel 87, :data1 64, :data2 87}]
+[{:chan 0, :cmd 176, :note 64, :vel 54, :data1 64, :data2 54}
+ {:chan 0, :cmd 176, :note 64, :vel 29, :data1 64, :data2 29}
+ {:chan 0, :cmd 176, :note 64, :vel 12, :data1 64, :data2 12}
+ {:chan 0, :cmd 176, :note 64, :vel 4, :data1 64, :data2 4}
+ {:chan 0, :cmd 176, :note 64, :vel 0, :data1 64, :data2 0}]

@@ -14,15 +14,15 @@
 
 (defn velocity [event]
   (cond
-    (= (event :cmd) 144) { :amp (event :vel) } ; note start
-    (= (event :cmd) 128) { :decay (event :vel) } ; note end
+    (= (event :cmd) 144) { :attack (event :vel) } ; note start
+    (= (event :cmd) 128) { :release (event :vel) } ; note end
     :else {}))
 
 (defn event->notemap [event]
   (let [note (event :note)]
     (conj {:note note} (velocity event))))
 
-; stack :amp, but use last :decay
+; stack :attack, but use last :release
 ; TODO: this is hideous. Make it nicer
 (defn merge-notemaps [first-note second-note]
   (if-not
@@ -31,11 +31,11 @@
 
   (let [note (first-note :note)
         position (first-note :position)
-        amp1 (or (first-note :amp) 0)
-        amp2 (or (second-note :amp) 0)
-        amp (+ amp1 amp2)
-        decay (or (second-note :decay) nil)]
-    (into {} (filter second {:amp amp :decay decay :note note :position position}))))
+        attack1 (or (first-note :attack) 0) ; TODO: fmap
+        attack2 (or (second-note :attack) 0) ; TODO: fmap
+        attack (+ attack1 attack2)
+        release (or (second-note :release) nil)]
+    (into {} (filter second {:attack attack :release release :note note :position position}))))
 
 (defn ->map [events]
   (let [merge-f #(merge-with merge-notemaps %1 {(%2 :note) (event->notemap %2)})]

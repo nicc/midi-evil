@@ -10,25 +10,25 @@
 
 (deftest updown-notemap
   (let [notemap (notes/->map keyupdown-middle-c)
-        expected { 60 { :amp 45
-                        :decay 40
+        expected { 60 { :attack 45
+                        :release 40
                         :note 60 }}]
     (is (= expected notemap))))
 
 (deftest down-notemap
   (let [notemap (notes/->map keydown-middle-c)
-        expected { 60 { :amp 45 :note 60 }}]
+        expected { 60 { :attack 45 :note 60 }}]
     (is (= expected notemap))))
 
 (deftest up-notemap
   (let [notemap (notes/->map keyup-middle-c)
-        expected { 60 { :decay 40 :note 60 }}]
+        expected { 60 { :release 40 :note 60 }}]
     (is (= expected notemap))))
 
 (deftest repeated-notemap
   (let [notemap (notes/->map middle-c-repeated)
-        expected { 60 { :amp 90 ; stack :amp
-                        :decay 40 ; use last :decay
+        expected { 60 { :attack 90 ; stack :attack
+                        :release 40 ; use last :release
                         :note 60 }}]
     (is (= expected notemap))))
 

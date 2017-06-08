@@ -2,7 +2,7 @@
   (:use clojure.test)
   (:require [main]))
 
-(def state { :piano { 42 { :amp 70 :decay 23 :note 42 }}})
+(def state { :piano { 42 { :attack 70 :release 23 :note 42 }}})
 (def keydown-middle-c [{:chan 0 :cmd 144 :note 60 :vel 45 :data1 60 :data2 45}])
 (def keyup-middle-c [{:chan 0 :cmd 128 :note 60 :vel 40 :data1 60 :data2 40}])
 (def events (concat keydown-middle-c keyup-middle-c))
@@ -11,11 +11,18 @@
   (is (= {:piano {}} (main/initial-state [:piano]))))
 
 (deftest update-state
-  (let [expected-piano-state { 42 { :amp 70 
-                                    :decay 23 
-                                    :note 42 }
-                               60 { :amp 45
-                                    :decay 40
+  (let [expected-piano-state { 42 { :attack 70 
+                                    :release 23 
+                                    :note 42
+                                    :effects {
+                                      :fade-in {
+                                        :val 0 ; increase this at a rate relative to attack value
+                                        :mutator #( )} ; val - (attack % 100)
+                                      :fade-out {
+                                        :val 100 ; reduce this at a rate relative to release value
+                                        :mutator #( )}}} ; val - (release % 100)
+                               60 { :attack 45
+                                    :release 40
                                     :note 60 }}
         expected-state        {:piano expected-piano-state}]
     (is (= expected-state (main/generate-state state events)))))

@@ -6,7 +6,8 @@
                   [thi.ng/color "1.2.0"]
                   [overtone/midi-clj "0.1"]
                   [adzerk/boot-test "1.1.1" :scope "test"]
-                  [org.clojure/algo.generic "0.1.2"]])
+                  [org.clojure/algo.generic "0.1.2"]
+                  [uncomplicate/fluokitten "0.6.0"]])
 
 (task-options!
  pom {:project 'midi-evil
