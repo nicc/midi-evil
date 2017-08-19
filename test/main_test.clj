@@ -1,8 +1,9 @@
 (ns main-test
-  (:use clojure.test)
+  (:use [clojure.test]
+        [uncomplicate.fluokitten core jvm])
   (:require [main]))
 
-(def state { :piano { 42 { :attack 70 :release 23 :note 42 }}})
+(def state { :piano { 42 { :attack 70 :release 22 :note 42 }}})
 (def keydown-middle-c [{:chan 0 :cmd 144 :note 60 :vel 45 :data1 60 :data2 45}])
 (def keyup-middle-c [{:chan 0 :cmd 128 :note 60 :vel 40 :data1 60 :data2 40}])
 (def events (concat keydown-middle-c keyup-middle-c))
@@ -10,9 +11,23 @@
 (deftest initial-state
   (is (= {:piano {}} (main/initial-state [:piano]))))
 
+
+
+(deftest simple-applicative
+  (let [half     #(/ % 2)
+        mutators { :piano { 42 { :attack half :release half }}}
+
+        expected-state { :piano { 42 { :attack 35 :release 11 :note 42 }}}]
+
+    (is (=
+          expected-state 
+          (fmap (partial fmap fapply) mutators state)))))
+
+
+
 (deftest update-state
   (let [expected-piano-state { 42 { :attack 70 
-                                    :release 23 
+                                    :release 22 
                                     :note 42
                                     :effects {
                                       :fade-in {
