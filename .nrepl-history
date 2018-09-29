@@ -286,3 +286,4 @@ c
 (fmap fmap fapply mutators state)
 fmap (partial fmap fapply) mutators state)
 (fmap (partial fmap fapply) mutators state)
+(require 'main)

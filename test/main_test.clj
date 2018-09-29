@@ -11,8 +11,14 @@
 (deftest initial-state
   (is (= {:piano {}} (main/initial-state [:piano]))))
 
-
-
+; TODO: this gives a very basic sense of how I'd like to use applicatives to create 
+;       mutating functions that can be assigned to draw state. A note event could generate
+;       a visual element that gets its own little data and function context. This would 
+;       allow for more dynamic visuals with fading and movement. It should also neatly separate 
+;       note state (which generates visual elements) from the lingering draw state required by 
+;       ongoing visual elements. e.g. a high velocity note could fade more slowly, or 
+;       we could parse out chords to render tonal colourscapes that are independent of 
+;       individual note elements, etc.
 (deftest simple-applicative
   (let [half     #(/ % 2)
         mutators { :piano { 42 { :attack half :release half }}}

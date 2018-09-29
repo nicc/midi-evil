@@ -60,17 +60,3 @@
       :draw draw
       :size [(size :x) (size :y)])
 
-
-; (defn adam-handler [inst]
-;  (let [notes* (atom {})]
-;    (fn [event ts]
-;      (cond
-;        (= (:cmd event) :note-on)
-;        (swap! notes* assoc (:note event) (inst :note (:note event) :velocity (:vel event)))
-
-;        (or (= (:cmd event) :note-off)
-;            (and (not (zero? (:note event)))
-;                 (zero? (:vel event))))
-
-;        (if-let [note-id (get @notes* (:note event))]
-;          (ctl note-id :gate 0))))))
