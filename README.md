@@ -1,6 +1,7 @@
 # midi-evil
+A toy project that draws visual elements based on midi notes.
 
-## General
+## General
 This is still in a fairly rough state.
 What we have so far...
 - midi signal path 
