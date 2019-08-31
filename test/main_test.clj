@@ -7,7 +7,7 @@
 (def keyup-middle-c [{:chan 0 :cmd 128 :note 60 :vel 40 :data1 60 :data2 40}])
 
 (def sample-state {
-  :piano { 42 { :attack 70 :release 22 :note 42 } } 
+  :piano { 42 { :attack 70 :note 42 } }
   :draw-state { "2ddbe992-7346-41d1-b5a3-7e2dbf541513" { :tstamp "2019-08-26T12:34:18.679"
                                                          :ttl 50
                                                          :blah :blah } }

@@ -16,9 +16,6 @@
     {}
     device-names))
 
-(defn merge-device-state [old-state new-state]
-  (merge-with notes/merge-notemaps old-state new-state))
-
 (defn set-positions [state]
   (let [get-position #(draw/position % (size :x) (size :y))
         or-position  #(or (% :position) (get-position %))
