@@ -1,7 +1,5 @@
 (ns device-state
-  (:require [notes])
-  ; (:use [uncomplicate.fluokitten core jvm])
-  )
+  (:require [notes]))
 
 (defn clean-notes [state]
   (->> state
