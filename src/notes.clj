@@ -33,7 +33,7 @@
         position (first-note :position)
         attack1 (or (first-note :attack) 0) ; TODO: fmap
         attack2 (or (second-note :attack) 0) ; TODO: fmap
-        attack (+ attack1 attack2)
+        attack attack2
         release (or (second-note :release) nil)]
     (into {} (filter second {:attack attack :release release :note note :position position}))))
 

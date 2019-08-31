@@ -2,6 +2,9 @@
   (:require [quil.core :as q]
             [colours]))
 
+(defn new-id []
+  (str (java.util.UUID/randomUUID)))
+
 (defn circle [k note]
   (q/stroke 0)
   (q/stroke-weight 4)

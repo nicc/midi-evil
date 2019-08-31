@@ -5,7 +5,8 @@
             [devices]
             [draw]
             [notes]
-            [clojure.algo.generic.functor :as funct]))
+            [clojure.algo.generic.functor :as funct]
+            [java-time :as jt]))
 
 (def size {:x 646 :y 400})
 
@@ -26,11 +27,46 @@
 
 ; TODO: make this generic for devices
 (defn generate-state [state events]
-  (let [new-state (notes/->map events)]
-    (->> events
-      (notes/->map)
-      (update-in state [:piano] merge-device-state)
-      (set-positions))))
+  (->> events
+    (notes/->map)
+    (update-in state [:piano] merge-device-state)
+    
+    (set-positions)))
+
+; ----- QUIL UPDATE FN -----
+; apply update-piano-state to piano-state and note events (sets :piano)
+; map piano events to have guid keys
+; update note->element-id
+; apply register-new-events to draw-state and note events (sets :draw-state, :update-fns, and :draw-fns)
+; fapply :update-fns to :draw-state (sets :draw-state)
+; remove any ttl 0 elements
+
+
+; ----- QUIL DRAW FN -----
+; fapply :draw-fns to :draw-state
+
+
+; ----- update-piano-state -----
+; add any new notes
+; remove any released notes
+; what about non-note values?
+; still keyed by note? probs not. just a vector of current... stuff?
+
+
+; ----- register-new-events -----
+; adds any missing element guids
+; updates any existing element guids (e.g. note off should set release and a ttl)
+; registers update fns
+; registers draw fns
+; set new update / draw fns for released notes??
+
+
+; ----- inner update fns -----
+; should count down ttl
+; control and modulate params to draw fns
+; polymorphism on held / released notes??
+
+
 
 (defn draw-state [state]
   (doseq [[n e] (seq (state :piano))]

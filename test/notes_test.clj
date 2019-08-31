@@ -12,7 +12,8 @@
   (let [notemap (notes/->map keyupdown-middle-c)
         expected { 60 { :attack 45
                         :release 40
-                        :note 60 }}]
+                        :note 60
+                        :ttl 0}}]
     (is (= expected notemap))))
 
 (deftest down-notemap
@@ -27,9 +28,10 @@
 
 (deftest repeated-notemap
   (let [notemap (notes/->map middle-c-repeated)
-        expected { 60 { :attack 90 ; stack :attack
+        expected { 60 { :attack 45
                         :release 40 ; use last :release
-                        :note 60 }}]
+                        :note 60 
+                        :ttl 0}}]
     (is (= expected notemap))))
 
 (deftest note-names
