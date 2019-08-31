@@ -9,7 +9,7 @@
 (def middle-c-repeated-held (concat keydown-middle-c keyup-middle-c keydown-middle-c))
 
 (deftest updown-notemap
-  (let [notemap (notes/->map keyupdown-middle-c)
+  (let [notemap (notes/->notemap keyupdown-middle-c)
         expected { 60 { :attack 45
                         :release 40
                         :note 60
@@ -17,17 +17,17 @@
     (is (= expected notemap))))
 
 (deftest down-notemap
-  (let [notemap (notes/->map keydown-middle-c)
+  (let [notemap (notes/->notemap keydown-middle-c)
         expected { 60 { :attack 45 :note 60 }}]
     (is (= expected notemap))))
 
 (deftest up-notemap
-  (let [notemap (notes/->map keyup-middle-c)
+  (let [notemap (notes/->notemap keyup-middle-c)
         expected { 60 { :release 40 :note 60 }}]
     (is (= expected notemap))))
 
 (deftest repeated-notemap
-  (let [notemap (notes/->map middle-c-repeated)
+  (let [notemap (notes/->notemap middle-c-repeated)
         expected { 60 { :attack 45
                         :release 40 ; use last :release
                         :note 60 

@@ -5,6 +5,7 @@
             [devices]
             [draw]
             [notes]
+            [device-state :as ds]
             [clojure.algo.generic.functor :as funct]
             [java-time :as jt]))
 
@@ -13,13 +14,16 @@
 (defn initial-state [device-names]
   (reduce 
     #(assoc %1 %2 {})
-    {}
+    { :draw-state {} 
+      :update-fns {} 
+      :draw-fns {}
+      :note->element-id {} }
     device-names))
 
-(defn update-piano-state [state events]
-  (->> events
-    (notes/->map)
-    (update-in state [:piano] merge-device-state)))
+(defn update-piano-state [state notemap]
+  (update-in state [:piano] ds/update-notes notemap))
+
+
 
 ; v --- quil functions --- v
     (defn setup []
@@ -29,10 +33,12 @@
       (initial-state (devices/names))) ; return initial state
 
     (defn update-state [state]
-      (let [events (devices/pull-events! :piano)]
+      (let [events                              (devices/pull-events! :piano)
+            notemap                             (notes/->notemap events)
+            [new-mappings notemap-by-elem-id]   (notes/notemap-by-elem-ids (:note->element-id state) notemap)]
         (-> state
-          (update-piano-state events)
-          
+          (update-piano-state notemap)
+          (assoc :note->element-id new-mappings)
           
           )))
 
@@ -60,10 +66,20 @@
 
 
 
+; (def sample-state {
+;   :piano { 42 { :attack 70 :note 42 } }
+;   :draw-state { "2ddbe992-7346-41d1-b5a3-7e2dbf541513" { :tstamp "2019-08-26T12:34:18.679"
+;                                                          :ttl 50
+;                                                          :blah :blah } }
+;   :update-fns { "2ddbe992-7346-41d1-b5a3-7e2dbf541513" #{} }
+;   :draw-fns { "2ddbe992-7346-41d1-b5a3-7e2dbf541513" #{} }
+;   :note->element-id { 42 "2ddbe992-7346-41d1-b5a3-7e2dbf541513" } })
+
+
 ; ----- QUIL UPDATE FN -----
 ; [x] apply update-piano-state to piano-state and note events (sets :piano)
-; [ ] map piano events to have guid keys
-; [ ] update note->element-id
+; [x] map piano events to have guid keys
+; [x] update note->element-id
 ; [ ] apply register-new-events to draw-state and note events (sets :draw-state, :update-fns, and :draw-fns)
 ; [ ] fapply :update-fns to :draw-state (sets :draw-state)
 ; [ ] remove any ttl 0 elements

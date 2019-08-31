@@ -1,4 +1,5 @@
 (ns notes
+  (:use [util])
   (:require [midi]))
 
 (def note-names [:C :C# :D :D# :E :F :F# :G :G# :A :A# :B ])
@@ -37,6 +38,32 @@
         release (or (second-note :release) nil)]
     (into {} (filter second {:attack attack :release release :note note :position position}))))
 
-(defn ->map [events]
+(defn ->notemap [events]
   (let [merge-f #(merge-with merge-notemaps %1 {(%2 :note) (event->notemap %2)})]
     (reduce merge-f {} events)))
+
+(defn- uuid [] (str (java.util.UUID/randomUUID)))
+
+(defn- init-elem-id [mappings note]
+  (cond-> mappings
+    (nil? (mappings note)) (assoc note (uuid))))
+
+(defn- note-by-elem-id [mappings [note m]]
+  (let [new-mappings (init-elem-id mappings note)]
+    [new-mappings [(new-mappings note) m]]))
+
+(defn notemap-by-elem-ids [mappings notemap]
+  (->> notemap
+    (map-with-memo note-by-elem-id mappings)
+    (into {})))
+
+
+
+
+
+
+
+
+
+
+

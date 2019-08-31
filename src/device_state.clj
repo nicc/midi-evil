@@ -8,6 +8,6 @@
 
 (defn update-notes [prior events] 
   (->> events
-    (notes/->map)
+    (notes/->notemap)
     (merge-with notes/merge-notemaps prior)
     (clean-notes)))

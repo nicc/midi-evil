@@ -17,7 +17,12 @@
   
 
 (deftest initial-state
-  (is (= {:piano {}} (main/initial-state [:piano]))))
+  (is (= { :piano {}  
+           :draw-state {} 
+           :update-fns {} 
+           :draw-fns {}
+           :note->element-id {} } 
+         (main/initial-state [:piano]))))
 
 ; TODO: this gives a very basic sense of how I'd like to use applicatives to create 
 ;       mutating functions that can be assigned to draw state. A note event could generate
