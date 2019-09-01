@@ -11,7 +11,7 @@
   :draw-state { "2ddbe992-7346-41d1-b5a3-7e2dbf541513" { :tstamp "2019-08-26T12:34:18.679"
                                                          :ttl 50
                                                          :blah :blah } }
-  :update-fns { "2ddbe992-7346-41d1-b5a3-7e2dbf541513" #{} }
+  :mutator-fns { "2ddbe992-7346-41d1-b5a3-7e2dbf541513" #{} }
   :draw-fns { "2ddbe992-7346-41d1-b5a3-7e2dbf541513" #{} }
   :note->element-id { 42 "2ddbe992-7346-41d1-b5a3-7e2dbf541513" } })
   
@@ -19,7 +19,7 @@
 (deftest initial-state
   (is (= { :piano {}  
            :draw-state {} 
-           :update-fns {} 
+           :mutator-fns {} 
            :draw-fns {}
            :note->element-id {} } 
          (main/initial-state [:piano]))))

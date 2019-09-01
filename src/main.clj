@@ -5,7 +5,8 @@
             [devices]
             [draw]
             [notes]
-            [device-state :as ds]
+            [device-state :as dvs]
+            [draw-state :as drs]
             [clojure.algo.generic.functor :as funct]
             [java-time :as jt]))
 
@@ -14,17 +15,22 @@
 (defn initial-state [device-names]
   (reduce 
     #(assoc %1 %2 {})
-    { :draw-state {} 
-      :update-fns {} 
+    { :draw-state {}
+      :mutator-fns {}
       :draw-fns {}
       :note->element-id {} }
     device-names))
 
 (defn update-piano-state [state notemap]
-  (update-in state [:piano] ds/update-notes notemap))
+  (update-in state [:piano] dvs/update-notes notemap))
 
-
-
+(defn register-new-events [state elem-notes] 
+  (-> state
+    (update-in [:draw-state] drs/update-state elem-notes)
+    (update-in [:mutator-fns] drs/update-mutator-fns elem-notes)
+    (update-in [:draw-fns] drs/update-draw-fns elem-notes)))
+    ; when to clear dead things??
+  
 ; v --- quil functions --- v
     (defn setup []
       (q/frame-rate 60)
@@ -39,6 +45,7 @@
         (-> state
           (update-piano-state notemap)
           (assoc :note->element-id new-mappings)
+          (register-new-events notemap-by-elem-id)
           
           )))
 
@@ -71,7 +78,7 @@
 ;   :draw-state { "2ddbe992-7346-41d1-b5a3-7e2dbf541513" { :tstamp "2019-08-26T12:34:18.679"
 ;                                                          :ttl 50
 ;                                                          :blah :blah } }
-;   :update-fns { "2ddbe992-7346-41d1-b5a3-7e2dbf541513" #{} }
+;   :mutator-fns { "2ddbe992-7346-41d1-b5a3-7e2dbf541513" #{} }
 ;   :draw-fns { "2ddbe992-7346-41d1-b5a3-7e2dbf541513" #{} }
 ;   :note->element-id { 42 "2ddbe992-7346-41d1-b5a3-7e2dbf541513" } })
 
@@ -80,8 +87,8 @@
 ; [x] apply update-piano-state to piano-state and note events (sets :piano)
 ; [x] map piano events to have guid keys
 ; [x] update note->element-id
-; [ ] apply register-new-events to draw-state and note events (sets :draw-state, :update-fns, and :draw-fns)
-; [ ] fapply :update-fns to :draw-state (sets :draw-state)
+; [ ] apply register-new-events to draw-state and note events (sets :draw-state, :mutator-fns, and :draw-fns)
+; [ ] fapply :mutator-fns to :draw-state (sets :draw-state)
 ; [ ] remove any ttl 0 elements
 
 

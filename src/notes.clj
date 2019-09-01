@@ -53,17 +53,6 @@
     [new-mappings [(new-mappings note) m]]))
 
 (defn notemap-by-elem-ids [mappings notemap]
-  (->> notemap
-    (map-with-memo note-by-elem-id mappings)
-    (into {})))
-
-
-
-
-
-
-
-
-
-
-
+  (->
+    (map-with-memo note-by-elem-id mappings notemap)
+    (update-in [1] (partial into {}))))
