@@ -2,7 +2,7 @@
   (:use [util])
   (:require [midi]))
 
-(def note-names [:C :C# :D :D# :E :F :F# :G :G# :A :A# :B ])
+(def note-names [:C :C# :D :D# :E :F :F# :G :G# :A :A# :B])
 
 (defn ->name [note]
   (let [midi-note (note :note)
@@ -15,8 +15,8 @@
 
 (defn velocity [event]
   (cond
-    (= (event :cmd) 144) { :attack (event :vel) } ; note start
-    (= (event :cmd) 128) { :release (event :vel) } ; note end
+    (= (event :cmd) 144) {:attack (event :vel)} ; note start
+    (= (event :cmd) 128) {:release (event :vel)} ; note end
     :else {}))
 
 (defn event->notemap [event]

@@ -11,39 +11,35 @@
 
 (deftest updown-notemap
   (let [notemap (notes/->notemap keyupdown-middle-c)
-        expected { 60 { :attack 45
-                        :release 40
-                        :note 60
-                        :ttl 0}}]
+        expected {60 {:attack 45
+                      :release 40
+                      :note 60}}]
     (is (= expected notemap))))
 
 (deftest down-notemap
   (let [notemap (notes/->notemap keydown-middle-c)
-        expected { 60 { :attack 45 :note 60 }}]
+        expected {60 {:attack 45 :note 60}}]
     (is (= expected notemap))))
 
 (deftest up-notemap
   (let [notemap (notes/->notemap keyup-middle-c)
-        expected { 60 { :release 40 :note 60 }}]
+        expected {60 {:release 40 :note 60}}]
     (is (= expected notemap))))
 
 (deftest repeated-notemap
   (let [notemap (notes/->notemap middle-c-repeated)
-        expected { 60 { :attack 45
-                        :release 40 ; use last :release
-                        :note 60 
-                        :ttl 0}}]
+        expected {60 {:attack 45
+                      :release 40
+                      :note 60}}]
     (is (= expected notemap))))
 
 (deftest elem-notemaps
-  (let [notemap                       { 60 { :attack 45
-                                             :release 40 ; use last :release
-                                             :note 60 
-                                             :ttl 0}
-                                        70 { :attack 55
-                                             :release 50 ; use last :release
-                                             :note 70 
-                                             :ttl 10}}
+  (let [notemap                       {60 {:attack 45
+                                           :release 40
+                                           :note 60}
+                                       70 {:attack 55
+                                           :release 50
+                                           :note 70}}
         mappings                      {60 "some-guid"}
         [new-mappings elem-notemap]   (notes/notemap-by-elem-ids mappings notemap)
         new-guid                      (first (difference (set (vals new-mappings)) #{"some-guid"}))]

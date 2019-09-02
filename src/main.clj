@@ -15,20 +15,18 @@
 (defn initial-state [device-names]
   (reduce 
     #(assoc %1 %2 {})
-    { :draw-state {}
-      :mutator-fns {}
-      :draw-fns {}
-      :note->element-id {} }
+    {:elems            {}
+     :elem-params      {}
+     :mutator-fns      {}
+     :draw-fns         {}
+     :note->element-id {}}
     device-names))
 
 (defn update-piano-state [state notemap]
   (update-in state [:piano] dvs/update-notes notemap))
 
 (defn register-new-events [state elem-notes] 
-  (-> state
-    (update-in [:draw-state] drs/update-state elem-notes)
-    (update-in [:mutator-fns] drs/update-mutator-fns elem-notes)
-    (update-in [:draw-fns] drs/update-draw-fns elem-notes)))
+  (update-in state [:elems] drs/update-elems elem-notes))
     ; when to clear dead things??
   
 ; v --- quil functions --- v
@@ -74,13 +72,17 @@
 
 
 ; (def sample-state {
-;   :piano { 42 { :attack 70 :note 42 } }
-;   :draw-state { "2ddbe992-7346-41d1-b5a3-7e2dbf541513" { :tstamp "2019-08-26T12:34:18.679"
-;                                                          :ttl 50
-;                                                          :blah :blah } }
-;   :mutator-fns { "2ddbe992-7346-41d1-b5a3-7e2dbf541513" #{} }
-;   :draw-fns { "2ddbe992-7346-41d1-b5a3-7e2dbf541513" #{} }
-;   :note->element-id { 42 "2ddbe992-7346-41d1-b5a3-7e2dbf541513" } })
+;   :piano            {42 {:attack 70 :note 42}}
+;   :elems            {"2ddbe992-7346-41d1-b5a3-7e2dbf541513" {:tstamp "2019-08-26T12:34:18.679"
+;                                                              :ttl 50
+;                                                              :attack 70 
+;                                                              :release 15
+;                                                              :note 42
+;                                                              :type :circle}}
+;   :elem-params      {"2ddbe992-7346-41d1-b5a3-7e2dbf541513" [12 4 :red]} ; ??
+;   :mutator-fns      {"2ddbe992-7346-41d1-b5a3-7e2dbf541513" #{}}
+;   :draw-fns         {"2ddbe992-7346-41d1-b5a3-7e2dbf541513" #{}}
+;   :note->element-id {42 "2ddbe992-7346-41d1-b5a3-7e2dbf541513"}})
 
 
 ; ----- QUIL UPDATE FN -----

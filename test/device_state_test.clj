@@ -8,23 +8,23 @@
 (def keydown-middle-d {:chan 0 :cmd 144 :note 62 :vel 15 :data1 62 :data2 15})
 
 
-; { 42 { :attack 70 :note 42 } }
+; {42 {:attack 70 :note 42}}
 
 (deftest updates-device-state
   (is (= 
-    { 60 { :attack 45 :note 60 } } 
+    {60 {:attack 45 :note 60}} 
     (dvs/update-notes {} [keydown-middle-c])))
   
   (is (= 
-    { 60 { :attack 55 :note 60 } } 
+    {60 {:attack 55 :note 60}} 
     (dvs/update-notes {} [keydown-middle-c 
                         (merge keydown-middle-c {:vel 55 :data2 55})])))
   
   (is (= 
-    { 60 { :attack 55 :note 60 }
-      62 { :attack 15 :note 62 } } 
-    (dvs/update-notes { 60 { :attack 55 :note 60 } } [keydown-middle-d])))
+    {60 {:attack 55 :note 60}
+      62 {:attack 15 :note 62}} 
+    (dvs/update-notes {60 {:attack 55 :note 60}} [keydown-middle-d])))
   
   (is (= 
-    { 62 { :attack 15 :note 62 } } 
+    {62 {:attack 15 :note 62}} 
     (dvs/update-notes {} [keydown-middle-c keyup-middle-c keydown-middle-d]))))

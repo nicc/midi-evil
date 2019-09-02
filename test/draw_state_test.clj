@@ -7,19 +7,27 @@
 (def keyupdown-middle-c (concat keydown-middle-c keyup-middle-c))
 (def middle-c-repeated (concat keydown-middle-c keyup-middle-c keydown-middle-c keyup-middle-c))
 (def middle-c-repeated-held (concat keydown-middle-c keyup-middle-c keydown-middle-c))
-(def mappings { 60 "guidy-two-shoes" 70 "guid-help-us" })
-(def elem-notes { "guidy-two-shoes" { :attack 45
-                                      :release 40 ; use last :release
-                                      :note 60 
-                                      :ttl 0 }
-                  "guid-help-us" { :attack 55
-                                   :release 50 ; use last :release
-                                   :note 70 
-                                   :ttl 10 }})
+(def mappings {60 "guidy-two-shoes" 70 "guid-help-us"})
+(def elem-notes {"guidy-two-shoes" {:attack 45
+                                    :release 40
+                                    :note 60}
+                 "guid-help-us"    {:attack 55
+                                    :release 50
+                                    :note 70}})
 
-(deftest updates-draw-state
-  (is (= :tested true))
-  )
+(deftest updates-elems
+  (is (= {"guidy-two-shoes" {:attack 45
+                             :release 40
+                             :note 60
+                             :type :circle}
+          "guid-help-us"    {:attack 55
+                             :release 50
+                             :note 70
+                             :type :circle}}
+          (drs/update-elems {"guidy-two-shoes" {:attack 45
+                                                :note 60
+                                                :type :circle}} 
+                            elem-notes))))
 
 (deftest updates-mutator-fns
   (is (= :tested true))
