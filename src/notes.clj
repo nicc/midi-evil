@@ -23,7 +23,6 @@
   (let [note (event :note)]
     (conj {:note note} (velocity event))))
 
-; stack :attack, but use last :release
 ; TODO: this is hideous. Make it nicer
 (defn merge-notemaps [first-note second-note]
   (if-not
@@ -32,9 +31,7 @@
 
   (let [note (first-note :note)
         position (first-note :position)
-        attack1 (or (first-note :attack) 0) ; TODO: fmap
-        attack2 (or (second-note :attack) 0) ; TODO: fmap
-        attack attack2
+        attack (or (second-note :attack) (first-note :attack) nil)
         release (or (second-note :release) nil)]
     (into {} (filter second {:attack attack :release release :note note :position position}))))
 

@@ -21,11 +21,12 @@
   
 
 (deftest initial-state
-  (is (= {:piano {}  
-          :draw-state {} 
-          :mutator-fns {} 
-          :draw-fns {}
-          :note->element-id {}}
+  (is (= {:elems {},
+          :elem-params {},
+          :mutator-fns {},
+          :draw-fns {},
+          :note->element-id {},
+          :piano {}}
          (main/initial-state [:piano]))))
 
 ; TODO: this gives a very basic sense of how I'd like to use applicatives to create 
@@ -62,27 +63,27 @@
 
 
 
-(deftest update-state
-  (let [state {:piano {42 {:attack 70 :release 22 :note 42}}}
-        events (concat keydown-middle-c keyup-middle-c)
-        expected-piano-state {42 {:attack 70 
-                                    :release 22 
-                                    :note 42
-                                    :effects {
-                                      :fade-in {
-                                        :val 0 ; increase this at a rate relative to attack value
-                                        :mutator #( )} ; val - (attack % 100)
-                                      :fade-out {
-                                        :val 100 ; reduce this at a rate relative to release value
-                                        :mutator #( )}}} ; val - (release % 100)
-                               60 {:attack 45
-                                    :release 40
-                                    :note 60}}
-        expected-state        {:piano expected-piano-state}]
-    (is (= expected-state (main/generate-state state events)))))
+; (deftest update-state
+;   (let [state {:piano {42 {:attack 70 :release 22 :note 42}}}
+;         events (concat keydown-middle-c keyup-middle-c)
+;         expected-piano-state {42 {:attack 70 
+;                                     :release 22 
+;                                     :note 42
+;                                     :effects {
+;                                       :fade-in {
+;                                         :val 0 ; increase this at a rate relative to attack value
+;                                         :mutator #( )} ; val - (attack % 100)
+;                                       :fade-out {
+;                                         :val 100 ; reduce this at a rate relative to release value
+;                                         :mutator #( )}}} ; val - (release % 100)
+;                                60 {:attack 45
+;                                     :release 40
+;                                     :note 60}}
+;         expected-state        {:piano expected-piano-state}]
+;     (is (= expected-state (main/generate-state state events)))))
 
-(deftest set-positions
-  (let [state {:piano {42 {:attack 70 :release 22 :note 42}}}
-        with-positions (main/set-positions state)
-        position       (get-in with-positions [:piano 42 :position])]
-    (is (= 2 (count position))))) ; vector with x and y
+; (deftest set-positions
+;   (let [state {:piano {42 {:attack 70 :release 22 :note 42}}}
+;         with-positions (main/set-positions state)
+;         position       (get-in with-positions [:piano 42 :position])]
+;     (is (= 2 (count position))))) ; vector with x and y
