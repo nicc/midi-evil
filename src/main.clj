@@ -10,8 +10,6 @@
             [clojure.algo.generic.functor :as funct]
             [java-time :as jt]))
 
-(def size {:x 646 :y 400})
-
 (defn initial-state [device-names]
   (reduce 
     #(assoc %1 %2 {})
@@ -26,8 +24,12 @@
   (update-in state [:piano] dvs/update-notes notemap))
 
 (defn register-new-events [state elem-notes] 
-  (update-in state [:elems] drs/update-elems elem-notes))
-    ; when to clear dead things??
+  (update-in state [:elems] drs/update-elems elem-notes)
+  ; update elem-params
+  ; update mutator-fns
+  ; update draw-fns
+  )
+    
   
 ; v --- quil functions --- v
     (defn setup []
@@ -43,8 +45,9 @@
         (-> state
           (update-piano-state notemap)
           (assoc :note->element-id new-mappings)
-          (register-new-events notemap-by-elem-id)
-          
+          ; apply mutator-fns to elem-params
+          (register-new-events notemap-by-elem-id)          
+          ; clear dead things??
           )))
 
     (defn draw [state]
@@ -58,17 +61,8 @@
       :setup setup
       :update update-state
       :draw draw
-      :size [(size :x) (size :y)])
+      :size [(draw/size :x) (draw/size :y)])
     
-    
-    
-
-; (defn set-positions [state]
-;   (let [get-position #(draw/position % (size :x) (size :y))
-;         or-position  #(or (% :position) (get-position %))
-;         set-position #(into % {:position (or-position %)})]
-;     (update-in state [:piano] (partial funct/fmap set-position))))
-
 
 
 ; (def sample-state {

@@ -2,8 +2,7 @@
   (:require [quil.core :as q]
             [colours]))
 
-(defn new-id []
-  (str (java.util.UUID/randomUUID)))
+(def size {:x 646 :y 400})
 
 (defn circle [k note]
   (q/stroke 0)
@@ -16,7 +15,7 @@
         y    (second (note :position))]
     (q/ellipse x y diam diam)))
 
-(defn position [_ x y]
-  (let [x (rand-int x) ; currently random
-        y (rand-int y)] ; currently random
+(defn new-position [_]
+  (let [x (rand-int (size :x))
+        y (rand-int (size :y))]
     [x y]))
