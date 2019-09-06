@@ -7,8 +7,8 @@
             [notes]
             [device-state :as dvs]
             [draw-state :as drs]
-            [clojure.algo.generic.functor :as funct]
-            [java-time :as jt]))
+            [java-time :as jt]
+            [mutators]))
 
 (defn initial-state [device-names]
   (reduce 
@@ -23,12 +23,12 @@
 (defn update-piano-state [state notemap]
   (update-in state [:piano] dvs/update-notes notemap))
 
-(defn register-new-events [state elem-notes] 
-  (update-in state [:elems] drs/update-elems elem-notes)
-  ; update elem-params
-  ; update mutator-fns
-  ; update draw-fns
-  )
+(defn register-new-elems [state elems]
+  (-> state
+    (update-in [:elems] drs/update-elems elems)
+    (update-in [:elem-params] drs/update-elem-params elems)
+    (update-in [:mutator-fns] drs/update-mutator-fns elems)
+    (update-in [:draw-fns] drs/update-draw-fns elems)))
     
   
 ; v --- quil functions --- v
@@ -45,8 +45,8 @@
         (-> state
           (update-piano-state notemap)
           (assoc :note->element-id new-mappings)
-          ; apply mutator-fns to elem-params
-          (register-new-events notemap-by-elem-id)          
+          (mutators/apply-to-elems)
+          (register-new-elems notemap-by-elem-id)
           ; clear dead things??
           )))
 
@@ -83,7 +83,7 @@
 ; [x] apply update-piano-state to piano-state and note events (sets :piano)
 ; [x] map piano events to have guid keys
 ; [x] update note->element-id
-; [ ] apply register-new-events to draw-state and note events (sets :draw-state, :mutator-fns, and :draw-fns)
+; [x] apply register-new-events to draw-state and note events (sets :draw-state, :mutator-fns, and :draw-fns)
 ; [ ] fapply :mutator-fns to :draw-state (sets :draw-state)
 ; [ ] remove any ttl 0 elements
 
@@ -93,17 +93,17 @@
 
 
 ; ----- update-piano-state -----
-; [ ] add any new notes
-; [ ] remove any released notes
+; [x] add any new notes
+; [x] remove any released notes
 ; [ ] what about non-note values?
-; [ ] still keyed by note? probs not. just a vector of current... stuff?
+; [x] still keyed by note? probs not. just a vector of current... stuff?
 
 
 ; ----- register-new-events -----
-; [ ] adds any missing element guids
-; [ ] updates any existing element guids (e.g. note off should set release and a ttl)
-; [ ] registers update fns
-; [ ] registers draw fns
+; [x] adds any missing element guids
+; [x] updates any existing element guids (e.g. note off should set release and a ttl)
+; [x] registers update fns
+; [x] registers draw fns
 ; [ ] set new update / draw fns for released notes??
 
 

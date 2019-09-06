@@ -27,23 +27,23 @@
 
 (defmulti get-draw-params :type)
   (defmethod get-draw-params :circle [note]
-    [(note :attack)])
+    {:diameter (note :attack)})
 
 (defmulti update-one-elem-params exists?)
   (defmethod update-one-elem-params false [params-state [elem-id note]]
-    (let [params (into []
-                   (concat 
-                     [(get-ttl note)]
-                     (draw/new-position note)
-                     [(colours/note->rgba-vector note)]
-                     (get-draw-params note)))]
-      (assoc params-state elem-id params)))
+    (let [[x y]        (draw/new-position note)
+          base-params  {:ttl       (get-ttl note)
+                       :x         x
+                       :y         y
+                       :colour    (colours/note->rgba-vector note)}]
+      (assoc params-state elem-id (merge base-params (get-draw-params note)))))
   
   (defmethod update-one-elem-params true [params-state [elem-id note]]
-    (let [params  (-> (params-state elem-id)
-                    (assoc 0 (get-ttl note))
-                    (assoc 3 (colours/note->rgba-vector note))
-                    (assoc 4 (note :attack)))]
+    (let [params  (-> elem-id
+                    (params-state)
+                    (assoc :ttl (get-ttl note))
+                    (assoc :colour (colours/note->rgba-vector note))
+                    (merge (get-draw-params note)))]
       (assoc params-state elem-id params)))
 
 (defn update-elem-params [params-state elem-notes]
@@ -51,11 +51,12 @@
 
 
 ; ----- MUTATOR FNS -----
-(defn update-mutator-fn [mutators-state [elem-id note]]
-  (assoc mutators-state elem-id (mutators/note-> note)))
+(defn update-mutator-fn [mutators-state [elem-id elem]]
+  (assoc mutators-state elem-id (mutators/elem-> elem)))
 
-(defn update-mutator-fns [mutators-state elem-notes]
-  (reduce update-mutator-fn mutators-state elem-notes))
+(defn update-mutator-fns [mutators-state elems]
+  (reduce update-mutator-fn mutators-state elems))
+                   
                    
 ; ----- DRAW FNS ----- 
 (defn update-draw-fn [draw-state [elem-id note]]
