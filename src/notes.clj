@@ -4,6 +4,8 @@
 
 (def note-names [:C :C# :D :D# :E :F :F# :G :G# :A :A# :B])
 
+(defn elem-type [note] :circle)
+
 (defn ->name [note]
   (let [midi-note (note :note)
         note-num (mod midi-note (count note-names))]
@@ -21,7 +23,7 @@
 
 (defn event->notemap [event]
   (let [note (event :note)]
-    (conj {:note note} (velocity event))))
+    (conj {:note note :type (elem-type note)} (velocity event))))
 
 ; TODO: this is hideous. Make it nicer
 (defn merge-notemaps [first-note second-note]
@@ -29,14 +31,15 @@
     (= (first-note :note) (second-note :note))
     (throw (Exception. "Don't know how to merge mismatched notes")))
 
-  (let [note (first-note :note)
+  (let [note     (first-note :note)
         position (first-note :position)
-        attack (or (second-note :attack) (first-note :attack) nil)
-        release (or (second-note :release) nil)]
-    (into {} (filter second {:attack attack :release release :note note :position position}))))
+        attack   (or (second-note :attack) (first-note :attack) nil)
+        release  (or (second-note :release) nil)
+        tp       (first-note :type)]
+    (into {} (filter second {:attack attack :release release :note note :position position :type tp}))))
 
 (defn ->notemap [events]
-  (let [merge-f #(merge-with merge-notemaps %1 {(%2 :note) (event->notemap %2)})]
+  (let [merge-f #(merge-with merge-notemaps %1 {(:note %2) (event->notemap %2)})]
     (reduce merge-f {} events)))
 
 (defn- uuid [] (str (java.util.UUID/randomUUID)))

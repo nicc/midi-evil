@@ -13,24 +13,26 @@
   (let [notemap (notes/->notemap keyupdown-middle-c)
         expected {60 {:attack 45
                       :release 40
-                      :note 60}}]
+                      :note 60
+                      :type :circle}}]
     (is (= expected notemap))))
 
 (deftest down-notemap
   (let [notemap (notes/->notemap keydown-middle-c)
-        expected {60 {:attack 45 :note 60}}]
+        expected {60 {:attack 45 :note 60 :type :circle}}]
     (is (= expected notemap))))
 
 (deftest up-notemap
   (let [notemap (notes/->notemap keyup-middle-c)
-        expected {60 {:release 40 :note 60}}]
+        expected {60 {:release 40 :note 60 :type :circle}}]
     (is (= expected notemap))))
 
 (deftest repeated-notemap
   (let [notemap (notes/->notemap middle-c-repeated)
         expected {60 {:attack 45
                       :release 40
-                      :note 60}}]
+                      :note 60
+                      :type :circle}}]
     (is (= expected notemap))))
 
 (deftest elem-notemaps

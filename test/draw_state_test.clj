@@ -5,10 +5,12 @@
 
 (def elem-notes {"guidy-two-shoes" {:attack 45
                                     :release 40
-                                    :note 60}
+                                    :note 60
+                                    :type :circle}
                  "guid-help-us"    {:attack 55
                                     :release 50
-                                    :note 70}})
+                                    :note 70
+                                    :type :circle}})
 
 (def sample-state {
   :piano            {60 {:attack 52 :note 60}}
@@ -77,7 +79,7 @@
                  "guid-help-us"    {:attack 55
                                     :note 70
                                     :type :circle}}
-        prior   {"guidy-two-shoes" (fn [[ttl x y rgba diam]] (println "diam!"))}
+        prior   {"guidy-two-shoes" [identity]}
         fns     (drs/update-mutator-fns prior elems)]
     (is (= ["guidy-two-shoes" "guid-help-us"] (keys fns)))
     (is (= [mutators/fall] (fns "guidy-two-shoes")))
@@ -91,7 +93,7 @@
                  "guid-help-us"    {:attack 55
                                     :note 70
                                     :type :circle}}
-        prior   {"guidy-two-shoes" (fn [[ttl x y rgba diam]] (println "diam!"))}
+        prior   {"guidy-two-shoes" [identity]}
         fns     (drs/update-draw-fns prior elems)]
     (is (= ["guidy-two-shoes" "guid-help-us"] (keys fns)))
     (is (= [draw/circle] (fns "guidy-two-shoes")))

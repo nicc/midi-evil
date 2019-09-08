@@ -4,11 +4,16 @@
 
 (def size {:x 646 :y 400})
 
-(defn circle [[ttl x y rgba diam]]
+(defn apply-to-elem-params [state]
+  (doseq [[elem-id fns] (:draw-fns state)]
+    (doseq [f fns]
+      (apply f [(get-in state [:elem-params elem-id])]))))
+
+(defn circle [{:keys [x y colour diameter]}]
   (q/stroke 0)
   (q/stroke-weight 2)
-  (apply q/fill rgba)
-  (q/ellipse x y diam diam))
+  (apply q/fill colour)
+  (q/ellipse x y diameter diameter))
 
 (defn new-position [_]
   (let [x (rand-int (size :x))

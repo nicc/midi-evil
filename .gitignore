@@ -12,3 +12,4 @@ pom.xml.asc
 .nrepl-port
 event.log
 .DS_Store
+*.log

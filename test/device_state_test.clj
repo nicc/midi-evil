@@ -1,6 +1,7 @@
 (ns device-state-test
   (:use clojure.test)
-  (:require [device-state :as dvs]))
+  (:require [device-state :as dvs]
+            [notes]))
 
 
 (def keydown-middle-c {:chan 0 :cmd 144 :note 60 :vel 45 :data1 60 :data2 45})
@@ -12,19 +13,19 @@
 
 (deftest updates-device-state
   (is (= 
-    {60 {:attack 45 :note 60}} 
-    (dvs/update-notes {} [keydown-middle-c])))
+    {60 {:attack 45 :note 60 :type :circle}}
+    (dvs/update-notes {} (notes/->notemap [keydown-middle-c]))))
   
   (is (= 
-    {60 {:attack 55 :note 60}} 
-    (dvs/update-notes {} [keydown-middle-c 
-                        (merge keydown-middle-c {:vel 55 :data2 55})])))
+    {60 {:attack 55 :note 60 :type :circle}}
+    (dvs/update-notes {} (notes/->notemap [keydown-middle-c 
+                                           (merge keydown-middle-c {:vel 55 :data2 55})]))))
   
   (is (= 
-    {60 {:attack 55 :note 60}
-      62 {:attack 15 :note 62}} 
-    (dvs/update-notes {60 {:attack 55 :note 60}} [keydown-middle-d])))
+    {60 {:attack 55 :note 60 :type :circle}
+     62 {:attack 15 :note 62 :type :circle}}
+    (dvs/update-notes {60 {:attack 55 :note 60 :type :circle}} (notes/->notemap [keydown-middle-d]))))
   
   (is (= 
-    {62 {:attack 15 :note 62}} 
-    (dvs/update-notes {} [keydown-middle-c keyup-middle-c keydown-middle-d]))))
+    {62 {:attack 15 :note 62 :type :circle}}
+    (dvs/update-notes {} (notes/->notemap [keydown-middle-c keyup-middle-c keydown-middle-d])))))

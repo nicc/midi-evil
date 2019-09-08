@@ -6,8 +6,7 @@
     (remove (comp :release second))
     (into {})))
 
-(defn update-notes [prior events] 
-  (->> events
-    (notes/->notemap)
+(defn update-notes [prior notemap]
+  (->> notemap
     (merge-with notes/merge-notemaps prior)
     (clean-notes)))

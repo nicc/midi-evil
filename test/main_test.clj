@@ -2,8 +2,8 @@
   (:use [clojure.test])
   (:require [main]))
 
-(def keydown-middle-c [{:chan 0 :cmd 144 :note 60 :vel 45 :data1 60 :data2 45}])
-(def keyup-middle-c   [{:chan 0 :cmd 128 :note 60 :vel 40 :data1 60 :data2 40}])
+; (def keydown-middle-c [{:chan 0 :cmd 144 :note 60 :vel 45 :data1 60 :data2 45}])
+; (def keyup-middle-c   [{:chan 0 :cmd 128 :note 60 :vel 40 :data1 60 :data2 40}])
 
 (def sample-state {
   :piano            {42 {:attack 70 :note 42}}

@@ -1,6 +1,7 @@
 (ns main
   (:require [quil.core :as q]
             [quil.middleware :as m]
+            [log]
             [midi]
             [devices]
             [draw]
@@ -36,7 +37,7 @@
       (q/frame-rate 60)
       (q/background 200)
       (devices/register! :piano)
-      (initial-state (devices/names))) ; return initial state
+      (initial-state (devices/names)))
 
     (defn update-state [state]
       (let [events                              (devices/pull-events! :piano)
@@ -50,8 +51,8 @@
           (drs/clear-the-dead))))
 
     (defn draw [state]
-      (doseq [[n e] (seq (state :piano))]
-        (draw/circle n e)))
+      ; (log/to-file "./state.log" state)
+      (draw/apply-to-elem-params state))
 
     (q/defsketch example 
       :middleware [m/fun-mode]
@@ -61,53 +62,3 @@
       :update update-state
       :draw draw
       :size [(draw/size :x) (draw/size :y)])
-    
-
-
-; (def sample-state {
-;   :piano            {42 {:attack 70 :note 42}}
-;   :elems            {"2ddbe992-7346-41d1-b5a3-7e2dbf541513" {:tstamp "2019-08-26T12:34:18.679"
-;                                                              :attack 70 
-;                                                              :release 15
-;                                                              :note 42
-;                                                              :type :circle}}
-;   :elem-params      {"2ddbe992-7346-41d1-b5a3-7e2dbf541513" {:ttl 0 :x 12 :y 4 :diameter 44}}
-;   :mutator-fns      {"2ddbe992-7346-41d1-b5a3-7e2dbf541513" [#{}]}
-;   :draw-fns         {"2ddbe992-7346-41d1-b5a3-7e2dbf541513" [#{}]}
-;   :note->element-id {42 "2ddbe992-7346-41d1-b5a3-7e2dbf541513"}})
-
-
-; ----- QUIL UPDATE FN -----
-; [x] apply update-piano-state to piano-state and note events (sets :piano)
-; [x] map piano events to have guid keys
-; [x] update note->element-id
-; [x] apply register-new-events to draw-state and note events (sets :draw-state, :mutator-fns, and :draw-fns)
-; [x] fapply :mutator-fns to :draw-state (sets :draw-state)
-; [ ] remove any ttl 0 elements
-
-
-; ----- QUIL DRAW FN -----
-; [ ] fapply :draw-fns to :draw-state
-
-
-; ----- update-piano-state -----
-; [x] add any new notes
-; [x] remove any released notes
-; [ ] what about non-note values?
-; [x] still keyed by note? probs not. just a vector of current... stuff?
-
-
-; ----- register-new-events -----
-; [x] adds any missing element guids
-; [x] updates any existing element guids (e.g. note off should set release and a ttl)
-; [x] registers update fns
-; [x] registers draw fns
-; [ ] set new update / draw fns for released notes??
-
-
-; ----- inner update fns -----
-; [ ] should count down ttl
-; [ ] control and modulate params to draw fns
-; [ ] polymorphism on held / released notes??
-
-

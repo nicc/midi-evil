@@ -14,7 +14,7 @@
 (defn clear-the-dead [state]
   (let [dead-elems      (keys (filter dead? (:elem-params state)))
         dead-notes      (map #(get-in state [:elems % :note]) dead-elems)
-        clear-fn        #(apply dissoc (concat [%2] %1))
+        clear-fn        #(apply dissoc (cons %2 %1))
         clear-elems-fn  (partial clear-fn dead-elems)]
     (-> state
       (update-in [:elems] clear-elems-fn)
@@ -26,8 +26,7 @@
 ; ----- ELEMS -----
 (defmulti update-elem exists?)
   (defmethod update-elem false [elem-state [elem-id note]]
-    (let [elem (assoc note :type (elem-type note))]   ; :tstamp (str (jt/local-date-time))
-      (assoc elem-state elem-id elem)))
+    (assoc elem-state elem-id note))
   
   (defmethod update-elem true [elem-state [elem-id note]]
     (update-in elem-state [elem-id] merge note)) ; merge could/should be fancier
@@ -42,15 +41,15 @@
 
 (defmulti get-draw-params :type)
   (defmethod get-draw-params :circle [note]
-    {:diameter (note :attack)})
+    {:diameter  (:attack note)
+     :ttl       (get-ttl note)
+     :colour    (colours/note->rgba-vector note)})
 
 (defmulti update-one-elem-params exists?)
   (defmethod update-one-elem-params false [params-state [elem-id note]]
     (let [[x y]        (draw/new-position note)
-          base-params  {:ttl       (get-ttl note)
-                        :x         x
-                        :y         y
-                        :colour    (colours/note->rgba-vector note)}]
+          base-params  {:x         x
+                        :y         y}]
       (assoc params-state elem-id (merge base-params (get-draw-params note)))))
   
   (defmethod update-one-elem-params true [params-state [elem-id note]]
