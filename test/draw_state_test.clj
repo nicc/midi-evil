@@ -3,18 +3,32 @@
   (:require [draw-state :as drs]
             [draw]))
 
-(def keydown-middle-c [{:chan 0 :cmd 144 :note 60 :vel 45 :data1 60 :data2 45}])
-(def keyup-middle-c [{:chan 0 :cmd 128 :note 60 :vel 40 :data1 60 :data2 40}])
-(def keyupdown-middle-c (concat keydown-middle-c keyup-middle-c))
-(def middle-c-repeated (concat keydown-middle-c keyup-middle-c keydown-middle-c keyup-middle-c))
-(def middle-c-repeated-held (concat keydown-middle-c keyup-middle-c keydown-middle-c))
-(def mappings {60 "guidy-two-shoes" 70 "guid-help-us"})
 (def elem-notes {"guidy-two-shoes" {:attack 45
                                     :release 40
                                     :note 60}
                  "guid-help-us"    {:attack 55
                                     :release 50
                                     :note 70}})
+
+(def sample-state {
+  :piano            {60 {:attack 52 :note 60}}
+  :elems            {"2ddbe992-7346-41d1-b5a3-7e2dbf541513" {:tstamp "2019-08-26T12:34:18.679"
+                                                             :attack 70 
+                                                             :release 15
+                                                             :note 42
+                                                             :type :circle}
+                     "728f675f-8dfa-46cf-9acf-d957f60b3d04" {:tstamp "2019-08-26T12:36:09.233"
+                                                             :attack 52 
+                                                             :note 60
+                                                             :type :circle}}
+  :elem-params      {"2ddbe992-7346-41d1-b5a3-7e2dbf541513" {:ttl 0 :x 12 :y 4 :diameter 70}
+                     "728f675f-8dfa-46cf-9acf-d957f60b3d04" {:ttl nil :x 87 :y 143 :diameter 52}}
+  :mutator-fns      {"2ddbe992-7346-41d1-b5a3-7e2dbf541513" [identity]
+                     "728f675f-8dfa-46cf-9acf-d957f60b3d04" [identity]}
+  :draw-fns         {"2ddbe992-7346-41d1-b5a3-7e2dbf541513" [draw/circle]
+                     "728f675f-8dfa-46cf-9acf-d957f60b3d04" [draw/circle]}
+  :note->element-id {42 "2ddbe992-7346-41d1-b5a3-7e2dbf541513"
+                     60 "728f675f-8dfa-46cf-9acf-d957f60b3d04"}})
 
 (deftest updates-elems
   (is (= {"guidy-two-shoes" {:attack 45
@@ -80,6 +94,17 @@
         prior   {"guidy-two-shoes" (fn [[ttl x y rgba diam]] (println "diam!"))}
         fns     (drs/update-draw-fns prior elems)]
     (is (= ["guidy-two-shoes" "guid-help-us"] (keys fns)))
-    (is (= draw/circle (fns "guidy-two-shoes")))
-    (is (= draw/circle (fns "guid-help-us")))))
+    (is (= [draw/circle] (fns "guidy-two-shoes")))
+    (is (= [draw/circle] (fns "guid-help-us")))))
 
+(deftest clears-the-dead
+  (let [expected   {:piano            {60 {:attack 52 :note 60}}
+                    :elems            {"728f675f-8dfa-46cf-9acf-d957f60b3d04" {:tstamp "2019-08-26T12:36:09.233"
+                                                                               :attack 52 
+                                                                               :note 60
+                                                                               :type :circle}}
+                    :elem-params      {"728f675f-8dfa-46cf-9acf-d957f60b3d04" {:ttl nil :x 87 :y 143 :diameter 52}}
+                    :mutator-fns      {"728f675f-8dfa-46cf-9acf-d957f60b3d04" [identity]}
+                    :draw-fns         {"728f675f-8dfa-46cf-9acf-d957f60b3d04" [draw/circle]}
+                    :note->element-id {60 "728f675f-8dfa-46cf-9acf-d957f60b3d04"}}]
+    (is (= expected (drs/clear-the-dead sample-state)))))

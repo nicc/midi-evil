@@ -8,14 +8,13 @@
 (def sample-state {
   :piano            {42 {:attack 70 :note 42}}
   :elems            {"2ddbe992-7346-41d1-b5a3-7e2dbf541513" {:tstamp "2019-08-26T12:34:18.679"
-                                                             :ttl 50
                                                              :attack 70 
                                                              :release 15
                                                              :note 42
                                                              :type :circle}}
-  :elem-params      {"2ddbe992-7346-41d1-b5a3-7e2dbf541513" [12 4 :red]} ; ??
+  :elem-params      {"2ddbe992-7346-41d1-b5a3-7e2dbf541513" {:ttl 0 :x 12 :y 4 :diameter 44}}
   :mutator-fns      {"2ddbe992-7346-41d1-b5a3-7e2dbf541513" [identity]}
-  :draw-fns         {"2ddbe992-7346-41d1-b5a3-7e2dbf541513" #{}}
+  :draw-fns         {"2ddbe992-7346-41d1-b5a3-7e2dbf541513" [#{}]}
   :note->element-id {42 "2ddbe992-7346-41d1-b5a3-7e2dbf541513"}})
   
 

@@ -8,6 +8,21 @@
 (defn exists? [prior-state [elem-id _]]
   (boolean (prior-state elem-id)))
 
+(defn- dead? [[elem-id elem]]
+  (= 0 (:ttl elem)))
+
+(defn clear-the-dead [state]
+  (let [dead-elems      (keys (filter dead? (:elem-params state)))
+        dead-notes      (map #(get-in state [:elems % :note]) dead-elems)
+        clear-fn        #(apply dissoc (concat [%2] %1))
+        clear-elems-fn  (partial clear-fn dead-elems)]
+    (-> state
+      (update-in [:elems] clear-elems-fn)
+      (update-in [:elem-params] clear-elems-fn)
+      (update-in [:mutator-fns] clear-elems-fn)
+      (update-in [:draw-fns] clear-elems-fn)
+      (update-in [:note->element-id] (partial clear-fn dead-notes)))))
+
 ; ----- ELEMS -----
 (defmulti update-elem exists?)
   (defmethod update-elem false [elem-state [elem-id note]]
@@ -33,9 +48,9 @@
   (defmethod update-one-elem-params false [params-state [elem-id note]]
     (let [[x y]        (draw/new-position note)
           base-params  {:ttl       (get-ttl note)
-                       :x         x
-                       :y         y
-                       :colour    (colours/note->rgba-vector note)}]
+                        :x         x
+                        :y         y
+                        :colour    (colours/note->rgba-vector note)}]
       (assoc params-state elem-id (merge base-params (get-draw-params note)))))
   
   (defmethod update-one-elem-params true [params-state [elem-id note]]

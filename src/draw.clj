@@ -16,4 +16,4 @@
     [x y]))
 
 (defmulti note-> :type)
-(defmethod note-> :circle [_] circle)
+(defmethod note-> :circle [_] [circle])

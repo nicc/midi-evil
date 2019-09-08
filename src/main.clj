@@ -47,8 +47,7 @@
           (assoc :note->element-id new-mappings)
           (mutators/apply-to-elems)
           (register-new-elems notemap-by-elem-id)
-          ; clear dead things??
-          )))
+          (drs/clear-the-dead))))
 
     (defn draw [state]
       (doseq [[n e] (seq (state :piano))]
@@ -68,14 +67,13 @@
 ; (def sample-state {
 ;   :piano            {42 {:attack 70 :note 42}}
 ;   :elems            {"2ddbe992-7346-41d1-b5a3-7e2dbf541513" {:tstamp "2019-08-26T12:34:18.679"
-;                                                              :ttl 50
 ;                                                              :attack 70 
 ;                                                              :release 15
 ;                                                              :note 42
 ;                                                              :type :circle}}
-;   :elem-params      {"2ddbe992-7346-41d1-b5a3-7e2dbf541513" [12 4 :red]} ; ??
-;   :mutator-fns      {"2ddbe992-7346-41d1-b5a3-7e2dbf541513" #{}}
-;   :draw-fns         {"2ddbe992-7346-41d1-b5a3-7e2dbf541513" #{}}
+;   :elem-params      {"2ddbe992-7346-41d1-b5a3-7e2dbf541513" {:ttl 0 :x 12 :y 4 :diameter 44}}
+;   :mutator-fns      {"2ddbe992-7346-41d1-b5a3-7e2dbf541513" [#{}]}
+;   :draw-fns         {"2ddbe992-7346-41d1-b5a3-7e2dbf541513" [#{}]}
 ;   :note->element-id {42 "2ddbe992-7346-41d1-b5a3-7e2dbf541513"}})
 
 
@@ -84,7 +82,7 @@
 ; [x] map piano events to have guid keys
 ; [x] update note->element-id
 ; [x] apply register-new-events to draw-state and note events (sets :draw-state, :mutator-fns, and :draw-fns)
-; [ ] fapply :mutator-fns to :draw-state (sets :draw-state)
+; [x] fapply :mutator-fns to :draw-state (sets :draw-state)
 ; [ ] remove any ttl 0 elements
 
 
