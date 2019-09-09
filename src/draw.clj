@@ -2,18 +2,23 @@
   (:require [quil.core :as q]
             [colours]))
 
-(defn circle [k note]
-  (q/stroke 0)
-  (q/stroke-weight 4)
-  (let [rgba (colours/note->rgba-vector note)]
-    (apply q/fill rgba))
-  
-  (let [diam 40
-        x    (first (note :position))
-        y    (second (note :position))]
-    (q/ellipse x y diam diam)))
+(def size {:x 646 :y 400})
 
-(defn position [_ x y]
-  (let [x (rand-int x) ; currently random
-        y (rand-int y)] ; currently random
+(defn apply-to-elem-params [state]
+  (doseq [[elem-id fns] (:draw-fns state)]
+    (doseq [f fns]
+      (apply f [(get-in state [:elem-params elem-id])]))))
+
+(defn circle [{:keys [x y colour diameter]}]
+  (q/stroke 0)
+  (q/stroke-weight 1)
+  (apply q/fill colour)
+  (q/ellipse x y diameter diameter))
+
+(defn new-position [_]
+  (let [x (rand-int (size :x))
+        y (rand-int (size :y))]
     [x y]))
+
+(defmulti note-> :type)
+(defmethod note-> :circle [_] [circle])

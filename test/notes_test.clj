@@ -1,5 +1,6 @@
 (ns notes-test
-  (:use clojure.test)
+  (:use [clojure.test]
+        [clojure.set])
   (:require [notes]))
 
 (def keydown-middle-c [{:chan 0 :cmd 144 :note 60 :vel 45 :data1 60 :data2 45}])
@@ -9,28 +10,47 @@
 (def middle-c-repeated-held (concat keydown-middle-c keyup-middle-c keydown-middle-c))
 
 (deftest updown-notemap
-  (let [notemap (notes/->map keyupdown-middle-c)
-        expected { 60 { :attack 45
-                        :release 40
-                        :note 60 }}]
+  (let [notemap (notes/->notemap keyupdown-middle-c)
+        expected {60 {:attack 45
+                      :release 40
+                      :note 60
+                      :type :circle}}]
     (is (= expected notemap))))
 
 (deftest down-notemap
-  (let [notemap (notes/->map keydown-middle-c)
-        expected { 60 { :attack 45 :note 60 }}]
+  (let [notemap (notes/->notemap keydown-middle-c)
+        expected {60 {:attack 45 :note 60 :type :circle}}]
     (is (= expected notemap))))
 
 (deftest up-notemap
-  (let [notemap (notes/->map keyup-middle-c)
-        expected { 60 { :release 40 :note 60 }}]
+  (let [notemap (notes/->notemap keyup-middle-c)
+        expected {60 {:release 40 :note 60 :type :circle}}]
     (is (= expected notemap))))
 
 (deftest repeated-notemap
-  (let [notemap (notes/->map middle-c-repeated)
-        expected { 60 { :attack 90 ; stack :attack
-                        :release 40 ; use last :release
-                        :note 60 }}]
+  (let [notemap (notes/->notemap middle-c-repeated)
+        expected {60 {:attack 45
+                      :release 40
+                      :note 60
+                      :type :circle}}]
     (is (= expected notemap))))
+
+(deftest elem-notemaps
+  (let [notemap                       {60 {:attack 45
+                                           :release 40
+                                           :note 60}
+                                       70 {:attack 55
+                                           :release 50
+                                           :note 70}}
+        mappings                      {60 "some-guid"}
+        [new-mappings elem-notemap]   (notes/notemap-by-elem-ids mappings notemap)
+        new-guid                      (first (difference (set (vals new-mappings)) #{"some-guid"}))]
+  
+  
+  (is (= (elem-notemap "some-guid") (notemap 60)))
+  (is (= (elem-notemap new-guid) (notemap 70)))
+  (is (= 2 (count (keys new-mappings))))
+  (is (= 2 (count (keys elem-notemap))))))
 
 (deftest note-names
   (is (= :C (notes/->name {:note 24})))

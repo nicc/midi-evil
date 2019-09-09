@@ -6,17 +6,19 @@ This is still in a fairly rough state.
 What we have so far...
 - midi signal path 
 - quil integration
-- the ability to draw basic circles on note events
 - basic note->colour mapping that _should_ result in some consistency between colour and music harmony
+- realtime device state for inferring things like chord identification and velocity spread
+- a decent draw state model
+- mutator functions in the state model that can alter draw params (to add stuff like fades and movement to the visual elements)
+- draw functions that can be dynamically bound to the state model on note entry (to do stuff like bind velocity or octave to different draw styles)
 
 
 TODO:
-- structural rewrite to incorporate category theory principles (see `simple-applicative` test and corresponding comment in `main-test`)
-- consider a different key for drawstate map. using note is very limited. should separate realtime note value tracking from resultant drawstate (hence the intended use of applicatives).
-- come up with some fun mutating functions for morphing visual elements.
+- deal with non-note midi commands like aftertouch and sustain. currently these error out
+- come up with some fun draw and mutator functions for rendering dynamic visual elements
 
 Caveats:
-This project was started (very hungover) as a toy to try Quil. It was some of the earliest Clojure I wrote. I've worked on it very intermittently since then during various points in my own progression. It's a mixed bag and not very serious.
+This project was started (very hungover) as a toy to try Quil. It was some of the earliest Clojure I wrote. I've worked on it very intermittently since then during various points in my own progression. It's a mixed bag and not very serious. The latest iteration incorporates some category theory principles. Future intentions include running this on a raspberry pi and adding visualisations that act as learning aids for the piano.
 
 ## Quickstart
 1) clone the project
@@ -29,4 +31,3 @@ This project was started (very hungover) as a toy to try Quil. It was some of th
 
 ### Notes
 Notes: 0 - 127 (middle C is at 60)
-Volume: 0 - 127

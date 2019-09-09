@@ -2,22 +2,6 @@
   (:require [thi.ng.color.core :as col]
             [notes]))
 
-; mapped to colour wheel in sequence from C.
-; (def note-hues {
-;   :C 0.0
-;   :C# 0.08169934640522876
-;   :D 0.16666666666666666
-;   :D# 0.25163398692810457
-;   :E 0.3333333333333333
-;   :F 0.4150326797385621
-;   :F# 0.5
-;   :G 0.5849673202614379
-;   :G# 0.6666666666666666
-;   :A 7483660130718954
-;   :A# 0.8333333333333334
-;   :B 0.9183006535947712})
-
-
 ; map the circle of fifths
 ; to a 12-step segmentation of the colour wheel
 (def note-hues {

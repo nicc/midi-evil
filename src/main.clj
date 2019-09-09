@@ -1,55 +1,58 @@
 (ns main
   (:require [quil.core :as q]
             [quil.middleware :as m]
+            [log]
             [midi]
             [devices]
             [draw]
             [notes]
-            [clojure.algo.generic.functor :as funct]))
-
-(def size {:x 646 :y 400})
+            [device-state :as dvs]
+            [draw-state :as drs]
+            [java-time :as jt]
+            [mutators]))
 
 (defn initial-state [device-names]
   (reduce 
     #(assoc %1 %2 {})
-    {}
+    {:elems            {}
+     :elem-params      {}
+     :mutator-fns      {}
+     :draw-fns         {}
+     :note->element-id {}}
     device-names))
 
-(defn merge-device-state [old-state new-state]
-  (merge-with notes/merge-notemaps old-state new-state))
+(defn update-piano-state [state notemap]
+  (update-in state [:piano] dvs/update-notes notemap))
 
-(defn set-positions [state]
-  (let [get-position #(draw/position % (size :x) (size :y))
-        or-position  #(or (% :position) (get-position %))
-        set-position #(into % {:position (or-position %)})]
-    (update-in state [:piano] (partial funct/fmap set-position))))
-
-; TODO: make this generic for devices
-(defn generate-state [state events]
-  (let [new-state (notes/->map events)]
-    (->> events
-      (notes/->map)
-      (update-in state [:piano] merge-device-state)
-      (set-positions))))
-
-(defn draw-state [state]
-  (doseq [[n e] (seq (state :piano))]
-    (draw/circle n e)))
-
-
+(defn register-new-elems [state elems]
+  (-> state
+    (update-in [:elems] drs/update-elems elems)
+    (update-in [:elem-params] drs/update-elem-params elems)
+    (update-in [:mutator-fns] drs/update-mutator-fns elems)
+    (update-in [:draw-fns] drs/update-draw-fns elems)))
+    
+  
 ; v --- quil functions --- v
     (defn setup []
       (q/frame-rate 60)
       (q/background 200)
       (devices/register! :piano)
-      (initial-state (devices/names))) ; return initial state
+      (initial-state (devices/names)))
 
     (defn update-state [state]
-      (let [events (devices/pull-events! :piano)]
-        (generate-state state events)))
+      (let [events                              (devices/pull-events! :piano)
+            notemap                             (notes/->notemap events)
+            [new-mappings notemap-by-elem-id]   (notes/notemap-by-elem-ids (:note->element-id state) notemap)]
+        (-> state
+          (update-piano-state notemap)
+          (assoc :note->element-id new-mappings)
+          (mutators/apply-to-elems)
+          (register-new-elems notemap-by-elem-id)
+          (drs/clear-the-dead))))
 
     (defn draw [state]
-      (draw-state state))
+      (q/background 200)
+      (draw/apply-to-elem-params state))
 
     (q/defsketch example 
       :middleware [m/fun-mode]
@@ -58,5 +61,4 @@
       :setup setup
       :update update-state
       :draw draw
-      :size [(size :x) (size :y)])
-
+      :size [(draw/size :x) (draw/size :y)])

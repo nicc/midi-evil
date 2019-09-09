@@ -3,11 +3,11 @@
   (:require [colours]
             [thi.ng.color.core :as thing-col]))
 
-(def second-octave-c { :attack 45 :release 40 :note 24 })
-(def middle-c { :attack 45 :release 40 :note 60 })
-(def middle-b { :attack 45 :release 40 :note 71 })
-(def middle-f { :attack 45 :release 40 :note 65 })
-(def eighth-octave-c { :attack 45 :release 40 :note 96 })
+(def second-octave-c {:attack 45 :release 40 :note 24})
+(def middle-c {:attack 45 :release 40 :note 60})
+(def middle-b {:attack 45 :release 40 :note 71})
+(def middle-f {:attack 45 :release 40 :note 65})
+(def eighth-octave-c {:attack 45 :release 40 :note 96})
 
 ; hue is mapped directly to notes
 (deftest hue-test
