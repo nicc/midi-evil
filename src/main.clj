@@ -51,7 +51,7 @@
           (drs/clear-the-dead))))
 
     (defn draw [state]
-      ; (log/to-file "./state.log" state)
+      (q/background 200)
       (draw/apply-to-elem-params state))
 
     (q/defsketch example 

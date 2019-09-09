@@ -11,7 +11,7 @@
 
 (defn circle [{:keys [x y colour diameter]}]
   (q/stroke 0)
-  (q/stroke-weight 2)
+  (q/stroke-weight 1)
   (apply q/fill colour)
   (q/ellipse x y diameter diameter))
 
